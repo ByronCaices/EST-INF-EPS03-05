@@ -186,7 +186,11 @@ print(paste("Probabilidad de error Tipo I:", p_error_tipo_I, "%"))
 media_verdadera <- 10.2
 
 # Calcular la probabilidad de cometer un error Tipo II (β)
-beta <- pnorm(Z2, mean = (media_verdadera - mu) / SEM, sd = 1) - pnorm(Z1, mean = (media_verdadera - mu) / SEM, sd = 1)
+poder_inf <- pnorm(lim_inferior, mean = media_verdadera, sd = SE, lower.tail = TRUE)
+poder_sup <- pnorm(lim_superior, mean = media_verdadera, sd = SE, lower.tail = FALSE)
+
+poder <- poder_inf + poder_sup
+beta <- 1 - poder
 
 # Imprimir la probabilidad de cometer un error Tipo II
 print(paste("Probabilidad de error Tipo II:", beta * 100, "%"))
@@ -292,7 +296,7 @@ medias <- seq(9.5, 10.5, by = 0.01)
 # Designamos un alfa de 0.05
 alfa<- 0.05
 
-#100 muestras (n)
+# 100 muestras (n)
 n<- 100
 
 desviacion_estandar = 1
@@ -322,11 +326,6 @@ ggplot(poder_df, aes(x = medias, y = poder)) +
 
 
 ```
-
-
-
-
-
 
 # Problema 4: Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder estadístico de 0,75 y un nivel de significación de 0,05?
 
