@@ -1,7 +1,7 @@
 ---
 title: "E03 - Estadística Inferencial"
-author: "Jaime Riquelme & Byron Caices"
-date: "2024-09-24"
+author: "Equipo 1"
+date: "2024-10-07"
 output:
     html_document:
     highlight: tango
