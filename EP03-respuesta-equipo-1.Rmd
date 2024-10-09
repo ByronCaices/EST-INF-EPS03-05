@@ -272,57 +272,85 @@ Si tuvieramos como verdadera media 10,2[L] con los limites establecidos previame
 # Problema 3: Como no se conoce el verdadero volumen medio, genere un gráfico del poder estadístico con las condiciones anteriores, pero suponiendo que el verdadero volumen medio podría variar de 9,5 a 10,5 litros. Hay un ejemplo de este tipo de gráfico en la lectura sobre poder estadístico.
 
 ```{r}
+# Inicializar poder
+poder_inf <- 0
+poder_sup <- 1
 
-# Rango de medias verdaderas a considerar
-medias <- seq(9.5, 10.5, by = 0.01)
+# Calcular poder_inf si umbral_inf no es nulo
+if(!is.null(x1)) {
+  poder_inf <- pnorm(x1, mean = media_poblacional, sd = SE, lower.tail = TRUE)
+}
 
-# Designamos un alfa de 0.05
-alfa<- 0.05
+# Calcular poder_sup si umbral_sup no es nulo
+if(!is.null(x2)) {
+  poder_sup <- pnorm(x2, mean = media_poblacional, sd = SE, lower.tail = FALSE)
+}
 
-# 100 muestras (n)
-n<- 100
+# Calcular poder total
+poder <- poder_inf + poder_sup
 
-desviacion_estandar = 1
+# Mostrar el poder calculado
+print(poder)
 
-mu = 10
+# Crear secuencia de valores para x3
+x3 <- seq(9.5, 10.5, 0.01)
 
-#Calculamos el tamaño del efecto
-deltas <- medias - mu
-deltas_norm <- deltas/desviacion_estandar
+# Calcular y3 directamente
+y3 <- sapply(x3, function(media_poblacional) {
+  poder_inf <- 0
+  poder_sup <- 1
+  
+  if(!is.null(umbral_inf)) {
+    poder_inf <- pnorm(x1, mean = media_poblacional, sd = SE, lower.tail = TRUE)
+  }
+  if(!is.null(umbral_sup)) {
+    poder_sup <- pnorm(x2, mean = media_poblacional, sd = SE, lower.tail = FALSE)
+  }
+  
+  return(poder_inf + poder_sup)
+})
 
-#Hacemos el cálculo del poder de la prueba Z 
+# Crear el data frame para ggplot
+distr3 <- data.frame(x = x3, y = y3)
 
-funcion_b <- function(x) pwr.norm.test(x,n=n, sig.level = alfa,
-                                       alternative = "greater")[["power"]]
+# Crear el gráfico
+g.3.bilateral <- ggplot(distr3, aes(x, y)) + ylim(c(0, 1))
+g.3.bilateral <- g.3.bilateral +
+ scale_x_continuous(name = "Volumen[L]",
+ breaks = seq(round(min(x3), 1), round(max(x3), 1), 0.1))
+g.3.bilateral <- g.3.bilateral + geom_line()
+g.3.bilateral <- g.3.bilateral + ylab("Poder estadístico")
+g.3.bilateral <- g.3.bilateral + theme_pubr()
+g.3.bilateral <- g.3.bilateral +
+ theme(axis.text.x = element_text(angle = 30, size = 10))
+g.3.bilateral <- g.3.bilateral + ggtitle("Poder vs Volumen")
 
-
-poder_unilat <- sapply(deltas_norm, funcion_b)
-
-# Crear dataframe para el gráfico
-poder_df <- data.frame(medias = medias, poder = poder_unilat)
-
-# Graficar el poder estadístico
-ggplot(poder_df, aes(x = medias, y = poder)) +
-                                geom_line() +
-                                ggtitle("Poder v/s Litros") +
-                                labs(x = "Litros", y = "Poder")
-
+# Mostrar el gráfico
+print(g.3.bilateral)
 
 ```
 
+
+
+Podemos apreciar de la gráfica que el poder se acerca a 1 cuando los litros son distintos a la hipótesis nula que corresponden a 10 Litros.
+
 # Problema 4: Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder estadístico de 0,75 y un nivel de significación de 0,05?
+
+Considerando que nos preguntan sobre la cantidad de bidones y que además nos entregan el poder estadístico y el nivel de significación α
+
 
 ```{r}
 #Se definen el nivel de significancia y poder dados en el enunciado
-media = 10
 alpha = 0.05
 poder = 0.75
+
+sigma <- 1  # Desviación estándar poblacional inicial
 
 #media real dado en el problema 2
 media_real = 10.2
 
-#Tamaño del efecto d
-d = (media_real - media)
+#Tamaño del efecto d (divide por 1, porque error estandar = 1)
+d = (media_real - media_poblacional)
 
 # Se usa pwr.norm.test para comprobar la cantidad de datos que se necesitan para tener dicha potencia y nivel de significancia
 resultado = pwr.norm.test(d = d, n = NULL, sig.level = alpha, power = poder, alternative = "two.sided")
@@ -339,10 +367,10 @@ cat("La cantidad de bidones a revisar para conseguir un poder de 0.75 mediante u
 
 Primero se definen las hipótesis nula y alternativa:
 
-Ho = $n_{1} = n_{2};$ $n_{1}:$ 100 , $n_{2}:$ n esperados para la muestra
+H0 = $n_{1} = n_{2};$ $n_{1}:$ 100 , $n_{2}:$ n esperados para la muestra
 - (No se puede determinar una diferencia entre las probabilidades de cometer un error entre las dos máquinas)
 
-Ha = $\mu{1} \neq \mu{2}$
+HA = $\mu{1} \neq \mu{2}$
 - (Si se puede determinar una diferencia entre las probabilidades de cometer un error entre las dos máquinas)
 
 Luego, utilizando los elementos ya definidos en el problema anterior tenemos:
