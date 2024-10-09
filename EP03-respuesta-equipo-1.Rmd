@@ -64,46 +64,45 @@ Error Tipo II
   Maquina Nueva = 0,04
   
   
-Las hipótesis a formular en este caso son:
-Ho:  La media del llenado de los bidones es igual a 10 litros.
-Ha: La media de llenado de los bidones es distinta de 10 litros.
+Por lo tanto, las hipótesis a formular en este caso son:
+H0:  La media del llenado de los bidones es igual a 10 litros.
+HA: La media de llenado de los bidones es distinta de 10 litros.
     
-En lenguaje matemático: como sabemos que muo y mua son la media de llenaodo de los bidones, entonces see puede redactar lo siguiente:
+En lenguaje matemático: 
+Denotando μ como la media de llenado de los bidones:
 
-    $Ho: mu = 10 litros.$
-    $Ha: mu =/ 10 litros.$
+    H0: μ = μ0, esto es, μ = 10 litros.
+    HA: μ =/ μ0, es decir, μ =/ 10 litros.
     
-    
-  
-  
 ## Pregunta 1
 Si la ingeniera piensa rechazar la hipótesis nula cuando la muestra presente una media menor a 9,78 litros o mayor a 10,22 litros, ¿cuál es la probabilidad de que cometa un error de tipo I? Para responder, generen un gráfico de la distribución muestral de las medias hipotetizada en donde se marquen las zonas correspondientes a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. Tome como ejemplo los scripts presentados en la lectura sobre poder estadístico.
 
+Como nos dicen que la media puede ser rechazada si esta es "menor a" o "mayor a" podemos decir que estamos ante una prueba bilateral.
+
+Partimos anotando los datos conocidos:
 ```{r}
 # Parámetros de la población y la muestra
 media_poblacional <- 10
 desviacion_estandar <- 1
+#tamano muestra
 n <- 100
+#error estandar
 SE <- desviacion_estandar / sqrt(n)
 
 # Límites de rechazo para la hipótesis nula
 x1 <- 9.78
 x2 <- 10.22
+```
 
-# Calcular los valores críticos Z
-z_critico_inferior <- qnorm(0.025, mean = media_poblacional, sd = SE)
-zinf = (media_poblacional - x1)/SE
-z_critico_superior <- qnorm(0.975, mean = media_poblacional, sd = SE)
-zsup = (media_poblacional - x2)/SE
-
+Ahora graficamos las regiones de error de tipo I
+```{r}
 # Crear una secuencia de valores para el eje x
 x <- seq(media_poblacional - 4*SE, media_poblacional + 4*SE, length.out = 1000)
 
 # Crear el gráfico base usando ggplot
-
 g_x_limites <- media_poblacional + c(-6, 5) * SE
 g <- ggplot() + xlim(g_x_limites)
-g <- g + labs(x = "Litros de detergente [lt]", y = "Densidad")
+g <- g + labs(x = "Volumen [lt]", y = "Densidad")
 g <- g + labs(title = "Distribución muestral de las medias")
 g <- g + theme_pubr()
 
@@ -120,6 +119,7 @@ g2 <- g1 + stat_function(fun = dnorm,
                          geom = "area",
                          xlim = c(g_x_limites[1], x1),
                          fill = "red", alpha = 0.6)
+
 g2 <- g2 + stat_function(fun = dnorm,
                          args = list(mean = media_poblacional, sd = SE),
                          geom = "area",
@@ -128,58 +128,23 @@ g2 <- g2 + stat_function(fun = dnorm,
 print(g2)
 
 ```
+Podemos apreciar del gráfico que las regiones de rechazo son pequeñas por lo que se espera conseguir un nivel de significancia bajo.
 
+
+Finalmente calculamos la probabilidad de cometer un error tipo I calculando las áreas de las regiones de rechazo:
 ```{r}
-
-
-
-media_nueva = rnorm(50, mean=10, sd=1)
-
-
-media_nueva = mean(media_nueva)
-media_nueva
-
-
-media_antigua = rnorm(50, mean=10, sd=1)
-
-
-media_antigua = mean(media_antigua)
-media_antigua
-
-#Diferencia de medias
-resta_media = media_nueva - media_antigua
-
-#Para calcular el efecto (diferencia de medias / desviación estandar)
-efecto= resta_media/desviacion_estandar
-efecto
-
-pwr.norm.test(d=efecto, n=100, sig.level = NULL, power = 0.96, alternative = "two.sided" )
-
-```
-
-
-```{r}
-# Parámetros del problema
-mu <- 10  # Media poblacional
-sigma <- 1  # Desviación estándar poblacional
-n <- 100  # Tamaño de la muestra
-x1 <- 9.78  # Límite inferior para rechazar H0
-x2 <- 10.22  # Límite superior para rechazar H0
-
-# Calcular el error estándar de la media (SEM)
-SEM <- sigma / sqrt(n)
-
 # Convertir los límites x1 y x2 en valores Z
-Z1 <- (x1 - mu) / SEM
-Z2 <- (x2 - mu) / SEM
+Z1 <- (x1 - media_poblacional) / SE
+Z2 <- (x2 - media_poblacional) / SE
 
 # Calcular la probabilidad de cometer un error Tipo I
-p_error_tipo_I <- (pnorm(Z1) + (1 - pnorm(Z2))) * 100
+p_error_tipo_I <- (pnorm(Z1) + (1 - pnorm(Z2))) 
 
 # Imprimir la probabilidad de cometer un error Tipo I
-print(paste("Probabilidad de error Tipo I:", p_error_tipo_I, "%"))
+print(paste("Probabilidad de error Tipo I es alfa =", p_error_tipo_I))
 
 ```
+A partir de los límites de rechazo de la hipótesis nula planteados en el enunciado tenemos que la probabilidad de cometer un error de tipo I es de α= 0.028 aproximadamente.
 
 
 # Problema 2: Si el verdadero volumen medio de los bidones fuera de 10,2 litros, ¿cuál sería la probabilidad de que la ingeniera, que obviamente no conoce este dato, cometa un error de tipo II? Para responder, agregue al gráfico anterior la verdadera distribución muestral de las medias y marquen (con otro color) la zona correspondiente a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. También hay ejemplos de este procedimiento en la lectura sobre poder estadístico.
