@@ -53,6 +53,8 @@ library(tidyr)
 # Enunciado
 En una planta química hay dos máquinas que envasan detergentes industriales en bidones con un volumen de producto que sigue una distribución normal con desviación estándar de 1 litro. La ingeniera a cargo de la planta debe asegurar que los bidones se están llenando con una media de 10 litros. Pero ella tiene la sospecha de que hay desviaciones en esta media, lo que piensa confirmar usando una muestra aleatoria de 100 envases (50 de cada una de las máquinas). También cree que hay diferencia en el cumplimiento del volumen requerido entre la máquina más antigua y la más moderna, que han de andar por el 90% y 96% de los bidones, respectivamente.
 
+A partir del enunciado podemos recolectar los siguientes datos: 
+
 Desviación Estándar = 1 litro
 Media = 10 litros
 n = 100
@@ -61,11 +63,15 @@ Error Tipo II
   Maquina Antigua = 0,1
   Maquina Nueva = 0,04
   
- La media del llenado de los bidones es de 10 litros:
-   Ho: mu = 10 litros.
+  
+Las hipótesis a formular en este caso son:
+Ho:  La media del llenado de los bidones es igual a 10 litros.
+Ha: La media de llenado de los bidones es distinta de 10 litros.
+    
+En lenguaje matemático: como sabemos que muo y mua son la media de llenaodo de los bidones, entonces see puede redactar lo siguiente:
 
- La media de llenado de los bidones es distinta de 10 litros
-    Ha: mu =/ 10 litros.
+    $Ho: mu = 10 litros.$
+    $Ha: mu =/ 10 litros.$
     
     
   
@@ -148,8 +154,6 @@ efecto= resta_media/desviacion_estandar
 efecto
 
 pwr.norm.test(d=efecto, n=100, sig.level = NULL, power = 0.96, alternative = "two.sided" )
-
-
 
 ```
 
