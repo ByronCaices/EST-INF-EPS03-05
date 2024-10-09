@@ -102,7 +102,7 @@ x <- seq(media_poblacional - 4*SE, media_poblacional + 4*SE, length.out = 1000)
 # Crear el gráfico base usando ggplot
 g_x_limites <- media_poblacional + c(-6, 5) * SE
 g <- ggplot() + xlim(g_x_limites)
-g <- g + labs(x = "Volumen [lt]", y = "Densidad")
+g <- g + labs(x = "Volumen [L]", y = "Densidad")
 g <- g + labs(title = "Distribución muestral de las medias")
 g <- g + theme_pubr()
 
@@ -138,7 +138,7 @@ Z1 <- (x1 - media_poblacional) / SE
 Z2 <- (x2 - media_poblacional) / SE
 
 # Calcular la probabilidad de cometer un error Tipo I
-p_error_tipo_I <- (pnorm(Z1) + (1 - pnorm(Z2))) 
+p_error_tipo_I <- (pnorm(Z1) + (1 - pnorm(Z2))) * 100
 
 # Imprimir la probabilidad de cometer un error Tipo I
 print(paste("Probabilidad de error Tipo I es alfa =", p_error_tipo_I))
@@ -147,54 +147,42 @@ print(paste("Probabilidad de error Tipo I es alfa =", p_error_tipo_I))
 A partir de los límites de rechazo de la hipótesis nula planteados en el enunciado tenemos que la probabilidad de cometer un error de tipo I es de α= 0.028 aproximadamente.
 
 
+
+
+
+
 # Problema 2: Si el verdadero volumen medio de los bidones fuera de 10,2 litros, ¿cuál sería la probabilidad de que la ingeniera, que obviamente no conoce este dato, cometa un error de tipo II? Para responder, agregue al gráfico anterior la verdadera distribución muestral de las medias y marquen (con otro color) la zona correspondiente a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. También hay ejemplos de este procedimiento en la lectura sobre poder estadístico.
 
+
+Agregamos al gráfico que sacamos previamente la verdadera distribución muestral en color azul
+
 ```{r}
-
-# Nueva media poblacional verdadera
-media_verdadera <- 10.2
-
-# Calcular la probabilidad de cometer un error Tipo II (β)
-poder_inf <- pnorm(lim_inferior, mean = media_verdadera, sd = SE, lower.tail = TRUE)
-poder_sup <- pnorm(lim_superior, mean = media_verdadera, sd = SE, lower.tail = FALSE)
-
-poder <- poder_inf + poder_sup
-beta <- 1 - poder
-
-# Imprimir la probabilidad de cometer un error Tipo II
-print(paste("Probabilidad de error Tipo II:", beta * 100, "%"))
-
-# Grafico correspondiente
+# Gráfico correspondiente
 
 # Áreas para el error tipo I (Alpha) y tipo II (Beta)
 alpha_area <- pnorm(Z1) + (1 - pnorm(Z2))
-beta_area <- pnorm(Z2, mean = media_verdadera, sd = SEM) - pnorm(Z1, mean = media_verdadera, sd = SEM)
+beta_area <- pnorm(Z2, mean = media_verdadera, sd = SE) - pnorm(Z1, mean = media_verdadera, sd = SE)
 
-# Límites para rechazar H0
-lim_inferior <- 9.78
-lim_superior <- 10.22
 
 # Zonas de rechazo para la media hipotética
-Z1 <- (lim_inferior - mu) / SEM
-Z2 <- (lim_superior - mu) / SEM
+Z1 <- (lim_inferior - media_poblacional) / SE
+Z2 <- (lim_superior - media_poblacional) / SE
 
 # Áreas para el error tipo I (Alpha) y tipo II (Beta)
 alpha_area <- pnorm(Z1) + (1 - pnorm(Z2))
-beta_area <- pnorm(Z2, mean = media_verdadera, sd = SEM) - pnorm(Z1, mean = media_verdadera, sd = SEM)
-
-# Generar el gráfico con las áreas de error marcadas
+beta_area <- pnorm(Z2, mean = media_verdadera, sd = SE) - pnorm(Z1, mean = media_verdadera, sd = SE)
 
 # Agregar la verdadera distribución muestral de las medias.
 dist_v <- stat_function(fun = dnorm,
-                        args = list(mean = media_verdadera, sd = SEM),
+                        args = list(mean = media_verdadera, sd = SE),
                         geom = "area",
                         colour = "blue", fill = "blue", alpha = 0.1)
 g3 <- g2 + dist_v + geom_vline(xintercept = media_verdadera, colour = "blue")
 
 # Agrega anotación del tamaño del efecto
-x_ann <- c(media_verdadera, mu)
-y_ann <- c(dnorm(media_verdadera, mean = media_verdadera, sd = SEM),
-           dnorm(mu, mean = mu, sd = SEM))
+x_ann <- c(media_verdadera, media_poblacional)
+y_ann <- c(dnorm(media_verdadera, mean = media_verdadera, sd = SE),
+           dnorm(media_poblacional, mean = media_poblacional, sd = SE))
 y_ann <- y_ann + 0.01
 g3 <- g3 + annotate("segment", x = x_ann[1], y = y_ann[1],
                     xend = x_ann[2], yend = y_ann[2],
@@ -204,22 +192,26 @@ g3 <- g3 + annotate("text", x = sum(x_ann) / 2, y = y_ann[1] - 0.001,
                     label = "delta", vjust = "top", parse = TRUE)
 
 print(g3)
+```
 
+Marcamos las áreas que corresponden al error de tipo II, las cuáles corresponden a las áreas fuera de las secciones críticas establecidas (9.78 [L] ; 10.22[L]) zona apuntada por β.
+
+```{r}
 # Traspasar las regiones críticas a la verdadera distribución muestral
 # de las medias.
 g4 <- g + dist_0 + dist_v
 g4 <- g4 + stat_function(fun = dnorm,
-                         args = list(mean = media_verdadera, sd = SEM),
+                         args = list(mean = media_verdadera, sd = SE),
                          geom = "area",
                          xlim = c(g_x_limites[1], lim_inferior),
                          fill = "blue", alpha = 0.6)
 g4 <- g4 + stat_function(fun = dnorm,
-                         args = list(mean = media_verdadera, sd = SEM),
+                         args = list(mean = media_verdadera, sd = SE),
                          geom = "area",
                          xlim = c(lim_superior, g_x_limites[2]),
                          fill = "blue", alpha = 0.6)
 g4 <- g4 + stat_function(fun = dnorm,
-                         args = list(mean = media_verdadera, sd = SEM),
+                         args = list(mean = media_verdadera, sd = SE),
                          geom = "area_pattern",
                          xlim = c(lim_inferior, lim_superior),
                          fill = "white", colour = "blue", alpha = 0.3,
@@ -227,7 +219,7 @@ g4 <- g4 + stat_function(fun = dnorm,
                          pattern_fill = "blue", pattern_colour = "blue",
                          pattern_angle = 45, pattern_alpha = 0.3)
 g4 <- g4 + stat_function(fun = dnorm,
-                         args = list(mean = media_verdadera, sd = SEM),
+                         args = list(mean = media_verdadera, sd = SE),
                          geom = "area_pattern",
                          xlim = c(lim_inferior, lim_superior),
                          fill = "white", colour = "blue", alpha = 0.6,
@@ -253,6 +245,28 @@ g4 <- g4 + annotate("segment", x = sum(x_ann) / 2, y = y_ann[1] - 0.2,
                                   ends = "last", type = "open"))
 print(g4)
 ```
+Finalmente calculamos la probabilidad de cometer error de tipo II
+
+```{r}
+# Límites para rechazar H0
+lim_inferior <- 9.78
+lim_superior <- 10.22
+
+# Nueva media poblacional verdadera
+media_verdadera <- 10.2
+
+# Calcular la probabilidad de cometer un error Tipo II (β)
+poder_inf <- pnorm(lim_inferior, mean = media_verdadera, sd = SE, lower.tail = TRUE)
+poder_sup <- pnorm(lim_superior, mean = media_verdadera, sd = SE, lower.tail = FALSE)
+
+poder <- poder_inf + poder_sup
+beta <- 1 - poder
+
+# Imprimir la probabilidad de cometer un error Tipo II
+print(paste("Probabilidad de cometer error de Tipo II =", beta))
+```
+Si tuvieramos como verdadera media 10,2[L] con los limites establecidos previamente para rechazar la hipotesis nula, la probabilidad de que cometa un error de tipo II sería β: 0.58
+
 
 
 # Problema 3: Como no se conoce el verdadero volumen medio, genere un gráfico del poder estadístico con las condiciones anteriores, pero suponiendo que el verdadero volumen medio podría variar de 9,5 a 10,5 litros. Hay un ejemplo de este tipo de gráfico en la lectura sobre poder estadístico.
