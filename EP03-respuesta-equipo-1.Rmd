@@ -19,7 +19,7 @@ body {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r, echo =FALSE, warning=FALSE, message=FALSE}
 options(repos = c(CRAN = "https://cran.rstudio.com/"))
 
 if (!requireNamespace('ggpattern', quietly = TRUE)){
@@ -55,38 +55,44 @@ En una planta química hay dos máquinas que envasan detergentes industriales en
 
 A partir del enunciado podemos recolectar los siguientes datos: 
 
-Desviación Estándar = 1 litro
-Media = 10 litros
-n = 100
+Desviación Estándar = 1 litro   
+Media = 10 litros   
+n = 100   
 
-Error Tipo II
-  Maquina Antigua = 0,1
+Error Tipo II   
+  Maquina Antigua = 0,1   
   Maquina Nueva = 0,04
   
   
-Por lo tanto, las hipótesis a formular en este caso son:
-H0:  La media del llenado de los bidones es igual a 10 litros.
-HA: La media de llenado de los bidones es distinta de 10 litros.
+Por lo tanto, podemos plantear nuestras hipótesis:    
+
+En lenguaje natural:
+
+- **H₀:**  Los bidones contienen en promedio 10 litros de detergente, es decir : $\mu = 10$ litros
+- **Hₐ:** El volumen promedio de los bidones no es igual a 10 litros, es decir: $\mu \neq 10$ litros
     
 En lenguaje matemático: 
-Denotando μ como la media de llenado de los bidones:
 
-    H0: μ = μ0, esto es, μ = 10 litros.
-    HA: μ =/ μ0, es decir, μ =/ 10 litros.
+- **H₀:** $\mu = 10$ litros
+- **Hₐ:** $\mu \neq 10$ litros
+
     
 ## Pregunta 1
-Si la ingeniera piensa rechazar la hipótesis nula cuando la muestra presente una media menor a 9,78 litros o mayor a 10,22 litros, ¿cuál es la probabilidad de que cometa un error de tipo I? Para responder, generen un gráfico de la distribución muestral de las medias hipotetizada en donde se marquen las zonas correspondientes a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. Tome como ejemplo los scripts presentados en la lectura sobre poder estadístico.
+Si la ingeniera piensa rechazar la hipótesis nula cuando la muestra presente una media menor a 9,78 litros o mayor a 10,22 litros, ¿cuál es la probabilidad de que cometa un error de tipo I? Para responder, generen un gráfico de la distribución muestral de las medias hipotetizada en donde se marquen las zonas correspondientes a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. Tome como ejemplo los scripts presentados en la lectura sobre poder estadístico.   
 
 Como nos dicen que la media puede ser rechazada si esta es "menor a" o "mayor a" podemos decir que estamos ante una prueba bilateral.
+Para identificar la probabilidad de cometer un error de tipo I debemos saber nuestros límites de rechazo, los cuales están planteados en el enunciado.
 
 Partimos anotando los datos conocidos:
 ```{r}
 # Parámetros de la población y la muestra
 media_poblacional <- 10
 desviacion_estandar <- 1
-#tamano muestra
+
+#tamaño de la muestra
 n <- 100
-#error estandar
+
+#error estándar
 SE <- desviacion_estandar / sqrt(n)
 
 # Límites de rechazo para la hipótesis nula
@@ -127,8 +133,9 @@ g2 <- g2 + stat_function(fun = dnorm,
                          fill = "red", alpha = 0.6)
 print(g2)
 
-```
-Podemos apreciar del gráfico que las regiones de rechazo son pequeñas por lo que se espera conseguir un nivel de significancia bajo.
+```   
+.   
+Podemos apreciar del gráfico que las regiones de rechazo, que son las zonas de color rojo "oscuro", son pequeñas por lo que se espera conseguir un nivel de significancia bajo.
 
 
 Finalmente calculamos la probabilidad de cometer un error tipo I calculando las áreas de las regiones de rechazo:
@@ -138,7 +145,7 @@ Z1 <- (x1 - media_poblacional) / SE
 Z2 <- (x2 - media_poblacional) / SE
 
 # Calcular la probabilidad de cometer un error Tipo I
-p_error_tipo_I <- (pnorm(Z1) + (1 - pnorm(Z2))) * 100
+p_error_tipo_I <- (pnorm(Z1) + (1 - pnorm(Z2))) 
 
 # Imprimir la probabilidad de cometer un error Tipo I
 print(paste("Probabilidad de error Tipo I es alfa =", p_error_tipo_I))
@@ -151,22 +158,24 @@ A partir de los límites de rechazo de la hipótesis nula planteados en el enunc
 
 
 
-# Problema 2: Si el verdadero volumen medio de los bidones fuera de 10,2 litros, ¿cuál sería la probabilidad de que la ingeniera, que obviamente no conoce este dato, cometa un error de tipo II? Para responder, agregue al gráfico anterior la verdadera distribución muestral de las medias y marquen (con otro color) la zona correspondiente a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. También hay ejemplos de este procedimiento en la lectura sobre poder estadístico.
+# Pregunta 2 
+Si el verdadero volumen medio de los bidones fuera de 10,2 litros, ¿cuál sería la probabilidad de que la ingeniera, que obviamente no conoce este dato, cometa un error de tipo II? Para responder, agregue al gráfico anterior la verdadera distribución muestral de las medias y marquen (con otro color) la zona correspondiente a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. También hay ejemplos de este procedimiento en la lectura sobre poder estadístico.    
 
 
 Agregamos al gráfico que sacamos previamente la verdadera distribución muestral en color azul
 
 ```{r}
-# Gráfico correspondiente
+# declaramos los datos entregados por el enunciado actual
+media_verdadera = 10.2
 
 # Áreas para el error tipo I (Alpha) y tipo II (Beta)
 alpha_area <- pnorm(Z1) + (1 - pnorm(Z2))
 beta_area <- pnorm(Z2, mean = media_verdadera, sd = SE) - pnorm(Z1, mean = media_verdadera, sd = SE)
 
 
-# Zonas de rechazo para la media hipotética
-Z1 <- (lim_inferior - media_poblacional) / SE
-Z2 <- (lim_superior - media_poblacional) / SE
+# calculamos las zonas de rechazo para la media hipotética, siendo x1 el límite inferior y x2 el límite superior de rechazo a la hipótesis nula
+Z1 <- (x1 - media_poblacional) / SE
+Z2 <- (x2 - media_poblacional) / SE
 
 # Áreas para el error tipo I (Alpha) y tipo II (Beta)
 alpha_area <- pnorm(Z1) + (1 - pnorm(Z2))
@@ -203,17 +212,17 @@ g4 <- g + dist_0 + dist_v
 g4 <- g4 + stat_function(fun = dnorm,
                          args = list(mean = media_verdadera, sd = SE),
                          geom = "area",
-                         xlim = c(g_x_limites[1], lim_inferior),
+                         xlim = c(g_x_limites[1], x1),
                          fill = "blue", alpha = 0.6)
 g4 <- g4 + stat_function(fun = dnorm,
                          args = list(mean = media_verdadera, sd = SE),
                          geom = "area",
-                         xlim = c(lim_superior, g_x_limites[2]),
+                         xlim = c(x2, g_x_limites[2]),
                          fill = "blue", alpha = 0.6)
 g4 <- g4 + stat_function(fun = dnorm,
                          args = list(mean = media_verdadera, sd = SE),
                          geom = "area_pattern",
-                         xlim = c(lim_inferior, lim_superior),
+                         xlim = c(x1, x2),
                          fill = "white", colour = "blue", alpha = 0.3,
                          pattern_spacing = 0.15, pattern_density = 0.4,
                          pattern_fill = "blue", pattern_colour = "blue",
@@ -221,7 +230,7 @@ g4 <- g4 + stat_function(fun = dnorm,
 g4 <- g4 + stat_function(fun = dnorm,
                          args = list(mean = media_verdadera, sd = SE),
                          geom = "area_pattern",
-                         xlim = c(lim_inferior, lim_superior),
+                         xlim = c(x1, x2),
                          fill = "white", colour = "blue", alpha = 0.6,
                          pattern_spacing = 0.15, pattern_density = 0.4,
                          pattern_fill = "blue", pattern_colour = "blue",
@@ -248,16 +257,9 @@ print(g4)
 Finalmente calculamos la probabilidad de cometer error de tipo II
 
 ```{r}
-# Límites para rechazar H0
-lim_inferior <- 9.78
-lim_superior <- 10.22
-
-# Nueva media poblacional verdadera
-media_verdadera <- 10.2
-
 # Calcular la probabilidad de cometer un error Tipo II (β)
-poder_inf <- pnorm(lim_inferior, mean = media_verdadera, sd = SE, lower.tail = TRUE)
-poder_sup <- pnorm(lim_superior, mean = media_verdadera, sd = SE, lower.tail = FALSE)
+poder_inf <- pnorm(x1, mean = media_verdadera, sd = SE, lower.tail = TRUE)
+poder_sup <- pnorm(x2, mean = media_verdadera, sd = SE, lower.tail = FALSE)
 
 poder <- poder_inf + poder_sup
 beta <- 1 - poder
@@ -269,19 +271,20 @@ Si tuvieramos como verdadera media 10,2[L] con los limites establecidos previame
 
 
 
-# Problema 3: Como no se conoce el verdadero volumen medio, genere un gráfico del poder estadístico con las condiciones anteriores, pero suponiendo que el verdadero volumen medio podría variar de 9,5 a 10,5 litros. Hay un ejemplo de este tipo de gráfico en la lectura sobre poder estadístico.
+# Pregunta 3
+Como no se conoce el verdadero volumen medio, genere un gráfico del poder estadístico con las condiciones anteriores, pero suponiendo que el verdadero volumen medio podría variar de 9,5 a 10,5 litros. Hay un ejemplo de este tipo de gráfico en la lectura sobre poder estadístico.    
 
 ```{r}
 # Inicializar poder
 poder_inf <- 0
 poder_sup <- 1
 
-# Calcular poder_inf si umbral_inf no es nulo
+# Calcular poder_inf si límite inferior no es nulo
 if(!is.null(x1)) {
   poder_inf <- pnorm(x1, mean = media_poblacional, sd = SE, lower.tail = TRUE)
 }
 
-# Calcular poder_sup si umbral_sup no es nulo
+# Calcular poder_sup si límite superior no es nulo
 if(!is.null(x2)) {
   poder_sup <- pnorm(x2, mean = media_poblacional, sd = SE, lower.tail = FALSE)
 }
@@ -300,10 +303,10 @@ y3 <- sapply(x3, function(media_poblacional) {
   poder_inf <- 0
   poder_sup <- 1
   
-  if(!is.null(umbral_inf)) {
+  if(!is.null(x1)) {
     poder_inf <- pnorm(x1, mean = media_poblacional, sd = SE, lower.tail = TRUE)
   }
-  if(!is.null(umbral_sup)) {
+  if(!is.null(x2)) {
     poder_sup <- pnorm(x2, mean = media_poblacional, sd = SE, lower.tail = FALSE)
   }
   
@@ -334,9 +337,10 @@ print(g.3.bilateral)
 
 Podemos apreciar de la gráfica que el poder se acerca a 1 cuando los litros son distintos a la hipótesis nula que corresponden a 10 Litros.
 
-# Problema 4: Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder estadístico de 0,75 y un nivel de significación de 0,05?
+# Pregunta 4
+Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder estadístico de 0,75 y un nivel de significación de 0,05?    
 
-Considerando que nos preguntan sobre la cantidad de bidones y que además nos entregan el poder estadístico y el nivel de significación α podemos utilizar la función pwr.norm.test() otorgándole valor NULL al tamaño de la muestra para que nos lo retorne y sepamos la cantidad de bidones.
+Cómo nos preguntan sobre la cantidad de bidones y que además nos entregan el poder estadístico y el nivel de significación α podemos utilizar la función pwr.norm.test() otorgándole valor NULL al tamaño de la muestra para que nos lo retorne y sepamos la cantidad de bidones.
 
 
 ```{r}
@@ -355,30 +359,43 @@ print(resultado)
 n = resultado$n
 n = ceiling(n)
 
-cat("La cantidad de bidones a revisar para conseguir un poder de 0.75 mediante un nivel de significancia del 5% son:", n)
+cat("La cantidad de bidones a revisar para conseguir un poder de 75% mediante un nivel de significancia del 5% son:", n)
 ```
 
-# Problema 5: ¿Alcanzaría esta muestra para detectar la diferencia que la ingeniera sospecha que existe entre las dos máquinas de la planta con las mismas probabilidades de cometer errores?
+# Pregunta 5
+¿Alcanzaría esta muestra para detectar la diferencia que la ingeniera sospecha que existe entre las dos máquinas de la planta con las mismas probabilidades de cometer errores?  
 
-Primero se definen las hipótesis nula y alternativa:
+Como ahora nos preguntan sobre las dos máquinas debemos trabajar con dos proporciones, y como también menciona el enunciado es la diferencia entre estas dos proporciones, las cuales también sabemos poseen la misma cantidad de muestra (50 envases c/u). Por lo tanto, debemos trabajar con pwr.2p.test(...)
 
-H0 = $n_{1} = n_{2};$ $n_{1}:$ 100 , $n_{2}:$ n esperados para la muestra
-- (No se puede determinar una diferencia entre las probabilidades de cometer un error entre las dos máquinas)
+Recordamos:   
+- La máquina antigua se cree que tiene un 90% de cumplimiento de volumen, identificado como p1.
+- La máquina nueva se cree que tiene un 96% de cumplimiento de volumen, identificado como p2.
 
-HA = $\mu{1} \neq \mu{2}$
-- (Si se puede determinar una diferencia entre las probabilidades de cometer un error entre las dos máquinas)
+Para iniciar definiremos las hipótesis nula y alternativa:    
+En lenguaje natural:
 
-Luego, utilizando los elementos ya definidos en el problema anterior tenemos:
+- **H₀:**  La proporción de volumen en los bidones entre ambas máquinas es igual, es decir, $\ p1 = p2$
+- **Hₐ:** La proporción de volumen en los bidones entre ambas máquinas es distinto, es decir, $\ p1 \neq p2$ 
+    
+En lenguaje matemático: 
+
+- **H₀:** $\ p1 = p2$ 
+
+- **Hₐ:** $\ p1 \neq p2$ 
+
+
+Luego, utilizando los elementos ya definidos en el problema tenemos:
 ```{r}
 #Se define el tamaño muestral dado por el enunciado
 n_inic = 100
 
-#Calculando proporciones para máquina 1(antigua) y 2(nueva)
-p1 = 90/100
-p2 = 96/100
+#Calculando los tamaños de efecto para máquina 1 (antigua) y 2(nueva)
+m1 = 90/100
+m2 = 96/100
 
 #Ahora se calcula el tamaño del efecto (H de Cohen)
-tam_efecto = 2*asin(sqrt(p1)) - 2*asin(sqrt(p2))
+tam_efecto = 2*asin(sqrt(m1)) - 2*asin(sqrt(m2))
+print(tam_efecto)
 
 #Recordando que se usan 2 máquinas, una la cual produce un 90% de sus envases con el volumen adecuado (10 litros) y otra al 96%, se utiliza la función de cálculo de potencia para 2 proporciones de igual tamaño muestral para calcular el número de envases necesarios para cubrir la potencia y alpha dado (calculando como n = NULL)
 cantidad = pwr.2p.test(h = tam_efecto, n = NULL, power = poder, sig.level = alpha, alternative = "two.sided")
@@ -390,6 +407,12 @@ n = ceiling(cantidad$n)
 if(n_inic > n){
   cat("La muestra dada por el enunciado es suficiente para poder encontrar una diferencia entre las dos máquinas y sus resultados")
 } else{
-  cat("La muestra dada por el enunciado NO es suficiente para poder encontrar una diferencia entre las dos máquinas y sus resultados")
+  cat("La muestra dada por el enunciado NO es suficiente para poder encontrar una diferencia entre las dos máquinas y sus resultados ")
 }
+
+cat("
+    El tamaño de muestra necesario para probar la diferencia entre las dos máquinas corresponde a n = ", n )
+
 ```
+Para concluir sobre la diferencia en ambas máquinas habría que necesitar muestras de 240 bidones de cada una de ellas para obtener el poder estadístico solicitado de 90% y un nivel de significación del 5%.   
+Por el resultado obtenido en la pergunta 4 de muestras de 174 bidones en total, implicaría unos 87 bidones por máquina, los cuales no son suficientes para poder diferenciar entre ambas, puesto que se necesitan al menos 240 bidones para ello.
