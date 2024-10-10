@@ -336,7 +336,7 @@ Podemos apreciar de la gráfica que el poder se acerca a 1 cuando los litros son
 
 # Problema 4: Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder estadístico de 0,75 y un nivel de significación de 0,05?
 
-Considerando que nos preguntan sobre la cantidad de bidones y que además nos entregan el poder estadístico y el nivel de significación α
+Considerando que nos preguntan sobre la cantidad de bidones y que además nos entregan el poder estadístico y el nivel de significación α podemos utilizar la función pwr.norm.test() otorgándole valor NULL al tamaño de la muestra para que nos lo retorne y sepamos la cantidad de bidones.
 
 
 ```{r}
@@ -344,15 +344,10 @@ Considerando que nos preguntan sobre la cantidad de bidones y que además nos en
 alpha = 0.05
 poder = 0.75
 
-sigma <- 1  # Desviación estándar poblacional inicial
+#Tamaño del efecto d de Cohen (divide por 1, porque desviación estándar = 1) en donde restamos la media verdadera de la pregunta 2 con la media de nuestra hipotesis nula para luego dividirlo por la desviacion estándar
+d = (media_verdadera - media_poblacional)/desviacion_estandar
 
-#media real dado en el problema 2
-media_real = 10.2
-
-#Tamaño del efecto d (divide por 1, porque error estandar = 1)
-d = (media_real - media_poblacional)
-
-# Se usa pwr.norm.test para comprobar la cantidad de datos que se necesitan para tener dicha potencia y nivel de significancia
+# Se usa pwr.norm.test para una prueba bilateral dandole vaor NULL a n que corresponde al tamaño de la muestra.
 resultado = pwr.norm.test(d = d, n = NULL, sig.level = alpha, power = poder, alternative = "two.sided")
 print(resultado)
 
