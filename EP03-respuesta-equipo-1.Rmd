@@ -31,7 +31,7 @@ if (!requireNamespace('dplyr', quietly = TRUE)){
 }
 library(dplyr)
 if (!requireNamespace('ggplot2', quietly = TRUE)){
-  install.packages('ggplo2')
+  install.packages('ggplot2')
 }
 library(ggplot2)
 if (!requireNamespace('ggpubr', quietly = TRUE)){
@@ -60,8 +60,8 @@ Media = 10 litros
 n = 100   
 
 Error Tipo II   
-  Maquina Antigua = 0,1   
-  Maquina Nueva = 0,04
+  Máquina Antigua = 0,1   
+  Máquina Nueva = 0,04
   
   
 Por lo tanto, podemos plantear nuestras hipótesis:    
@@ -81,7 +81,7 @@ En lenguaje matemático:
 Si la ingeniera piensa rechazar la hipótesis nula cuando la muestra presente una media menor a 9,78 litros o mayor a 10,22 litros, ¿cuál es la probabilidad de que cometa un error de tipo I? Para responder, generen un gráfico de la distribución muestral de las medias hipotetizada en donde se marquen las zonas correspondientes a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. Tome como ejemplo los scripts presentados en la lectura sobre poder estadístico.   
 
 Como nos dicen que la media puede ser rechazada si esta es "menor a" o "mayor a" podemos decir que estamos ante una prueba bilateral.
-Para identificar la probabilidad de cometer un error de tipo I debemos saber nuestros límites de rechazo, los cuales están planteados en el enunciado.
+Para identificar la probabilidad de cometer un error de tipo I debemos saber nuestros límites de rechazo, los cuáles están planteados en el enunciado.
 
 Partimos anotando los datos conocidos:
 ```{r}
@@ -161,8 +161,9 @@ A partir de los límites de rechazo de la hipótesis nula planteados en el enunc
 # Pregunta 2 
 Si el verdadero volumen medio de los bidones fuera de 10,2 litros, ¿cuál sería la probabilidad de que la ingeniera, que obviamente no conoce este dato, cometa un error de tipo II? Para responder, agregue al gráfico anterior la verdadera distribución muestral de las medias y marquen (con otro color) la zona correspondiente a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. También hay ejemplos de este procedimiento en la lectura sobre poder estadístico.    
 
+Como ahora tenemos el verdadero volumen medio debemos compararla con la media nula de la hipótesis para evaluar como se comportan los errores de tipo I y tipo II debido a que la verdadera media no es igual a la media nula.
 
-Agregamos al gráfico que sacamos previamente la verdadera distribución muestral en color azul
+Agregamos al gráfico que sacamos previamente la verdadera distribución muestral en color azul claro.
 
 ```{r}
 # declaramos los datos entregados por el enunciado actual
@@ -203,7 +204,7 @@ g3 <- g3 + annotate("text", x = sum(x_ann) / 2, y = y_ann[1] - 0.001,
 print(g3)
 ```
 
-Marcamos las áreas que corresponden al error de tipo II, las cuáles corresponden a las áreas fuera de las secciones críticas establecidas (9.78 [L] ; 10.22[L]) zona apuntada por β.
+Marcamos las áreas que corresponden al error de tipo II (9.78 [L] ; 10.22[L]) zona apuntada por β donde no se rechaza la hipótesis nula. 
 
 ```{r}
 # Traspasar las regiones críticas a la verdadera distribución muestral
@@ -267,12 +268,14 @@ beta <- 1 - poder
 # Imprimir la probabilidad de cometer un error Tipo II
 print(paste("Probabilidad de cometer error de Tipo II =", beta))
 ```
-Si tuvieramos como verdadera media 10,2[L] con los limites establecidos previamente para rechazar la hipotesis nula, la probabilidad de que cometa un error de tipo II sería β: 0.58
+Si tuviéramos como verdadera media 10,2[L] con los limites establecidos previamente para rechazar la hipótesis nula, la probabilidad de que cometa un error de tipo II sería β: 0.58
 
 
 
 # Pregunta 3
 Como no se conoce el verdadero volumen medio, genere un gráfico del poder estadístico con las condiciones anteriores, pero suponiendo que el verdadero volumen medio podría variar de 9,5 a 10,5 litros. Hay un ejemplo de este tipo de gráfico en la lectura sobre poder estadístico.    
+
+En este caso como nos entregan la información de que el volumen medio puede variar, nos quiere decir que veamos como se comporta el poder a medida que nos acercamos o alejamos de la media nula (10 L)
 
 ```{r}
 # Inicializar poder
@@ -291,9 +294,6 @@ if(!is.null(x2)) {
 
 # Calcular poder total
 poder <- poder_inf + poder_sup
-
-# Mostrar el poder calculado
-print(poder)
 
 # Crear secuencia de valores para x3
 x3 <- seq(9.5, 10.5, 0.01)
@@ -319,7 +319,7 @@ distr3 <- data.frame(x = x3, y = y3)
 # Crear el gráfico
 g.3.bilateral <- ggplot(distr3, aes(x, y)) + ylim(c(0, 1))
 g.3.bilateral <- g.3.bilateral +
- scale_x_continuous(name = "Volumen[L]",
+ scale_x_continuous(name = "Verdadero volumen medio[L]",
  breaks = seq(round(min(x3), 1), round(max(x3), 1), 0.1))
 g.3.bilateral <- g.3.bilateral + geom_line()
 g.3.bilateral <- g.3.bilateral + ylab("Poder estadístico")
@@ -334,8 +334,8 @@ print(g.3.bilateral)
 ```
 
 
-
-Podemos apreciar de la gráfica que el poder se acerca a 1 cuando los litros son distintos a la hipótesis nula que corresponden a 10 Litros.
+En este gráfico podemos apreciar el como se comporta el poder al alejarse o acercarse a la media nula (10 L).    
+El poder aumenta a medida que la verdadera media se aleja de la media nula teniendo un poder de 1 que indica que siempre se detecta la diferencia entre medias. En cambio el poder estádistico diminuye a 0 al estar cerca de la media nula, indicando que es difícil rechazar la hipótesis nula.
 
 # Pregunta 4
 Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder estadístico de 0,75 y un nivel de significación de 0,05?    
@@ -348,7 +348,7 @@ Cómo nos preguntan sobre la cantidad de bidones y que además nos entregan el p
 alpha = 0.05
 poder = 0.75
 
-#Tamaño del efecto d de Cohen (divide por 1, porque desviación estándar = 1) en donde restamos la media verdadera de la pregunta 2 con la media de nuestra hipotesis nula para luego dividirlo por la desviacion estándar
+#Tamaño del efecto d de Cohen (divide por 1, porque desviación estándar = 1) en donde restamos la media verdadera de la pregunta 2 con la media de nuestra hipótesis nula para luego dividirlo por la desviacion estándar
 d = (media_verdadera - media_poblacional)/desviacion_estandar
 
 # Se usa pwr.norm.test para una prueba bilateral dandole vaor NULL a n que corresponde al tamaño de la muestra.
@@ -365,7 +365,7 @@ cat("La cantidad de bidones a revisar para conseguir un poder de 75% mediante un
 # Pregunta 5
 ¿Alcanzaría esta muestra para detectar la diferencia que la ingeniera sospecha que existe entre las dos máquinas de la planta con las mismas probabilidades de cometer errores?  
 
-Como ahora nos preguntan sobre las dos máquinas debemos trabajar con dos proporciones, y como también menciona el enunciado es la diferencia entre estas dos proporciones, las cuales también sabemos poseen la misma cantidad de muestra (50 envases c/u). Por lo tanto, debemos trabajar con pwr.2p.test(...)
+Como ahora nos preguntan sobre las dos máquinas debemos trabajar con dos proporciones, y como también menciona el enunciado es la diferencia entre estas dos proporciones, las cuáles también sabemos poseen la misma cantidad de muestra (50 envases c/u). Por lo tanto, debemos trabajar con pwr.2p.test(...)
 
 Recordamos:   
 - La máquina antigua se cree que tiene un 90% de cumplimiento de volumen, identificado como p1.
@@ -415,4 +415,4 @@ cat("
 
 ```
 Para concluir sobre la diferencia en ambas máquinas habría que necesitar muestras de 240 bidones de cada una de ellas para obtener el poder estadístico solicitado de 90% y un nivel de significación del 5%.   
-Por el resultado obtenido en la pergunta 4 de muestras de 174 bidones en total, implicaría unos 87 bidones por máquina, los cuales no son suficientes para poder diferenciar entre ambas, puesto que se necesitan al menos 240 bidones para ello.
+Por el resultado obtenido en la pergunta 4 de muestras de 174 bidones en total, implicaría unos 87 bidones por máquina, los cuáles no son suficientes para poder diferenciar entre ambas, puesto que se necesitan al menos 240 bidones para ello.
