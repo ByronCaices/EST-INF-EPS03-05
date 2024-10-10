@@ -362,7 +362,7 @@ alpha = 0.05
 poder = 0.75
 
 #Tamaño del efecto d de Cohen (divide por 1, porque desviación estándar = 1) en donde restamos la media verdadera de la pregunta 2 con la media de nuestra hipótesis nula para luego dividirlo por la desviacion estándar
-d = (media_verdadera - media_poblacional)/desviacion_estandar
+d = diferencia_medias /desviacion_estandar
 
 # Se usa pwr.norm.test para una prueba bilateral dandole vaor NULL a n que corresponde al tamaño de la muestra.
 resultado = pwr.norm.test(d = d, n = NULL, sig.level = alpha, power = poder, alternative = "greater")
@@ -428,4 +428,4 @@ cat("
 
 ```
 Para concluir sobre la diferencia en ambas máquinas habría que necesitar muestras de 240 bidones de cada una de ellas para obtener el poder estadístico solicitado de 90% y un nivel de significación del 5%.   
-Por el resultado obtenido en la pergunta 4 de muestras de 174 bidones en total, implicaría unos 87 bidones por máquina, los cuáles no son suficientes para poder diferenciar entre ambas, puesto que se necesitan al menos 240 bidones para ello.
+Por el resultado obtenido en la pergunta 4 de muestras de 135 bidones en total, implicaría unos 67 bidones por máquina, los cuáles no son suficientes para poder diferenciar entre ambas, puesto que se necesitan al menos 240 bidones para ello.
