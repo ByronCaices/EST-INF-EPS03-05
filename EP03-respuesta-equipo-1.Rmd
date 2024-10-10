@@ -147,11 +147,13 @@ Z2 <- (x2 - media_poblacional) / SE
 # Calcular la probabilidad de cometer un error Tipo I
 p_error_tipo_I <- (pnorm(Z1) + (1 - pnorm(Z2))) 
 
+p_error_tipo_I_porcentaje <- p_error_tipo_I * 100
+
 # Imprimir la probabilidad de cometer un error Tipo I
-print(paste("Probabilidad de error Tipo I es alfa =", p_error_tipo_I))
+print(paste0("Probabilidad de error Tipo I es alfa = ", p_error_tipo_I, " o de porcentaje = ", sprintf("%.3f%%", p_error_tipo_I_porcentaje)))
 
 ```
-A partir de los límites de rechazo de la hipótesis nula planteados en el enunciado tenemos que la probabilidad de cometer un error de tipo I es de α= 0.028 aproximadamente.
+A partir de los límites de rechazo de la hipótesis nula planteados en el enunciado tenemos que la probabilidad de cometer un error de tipo I es de α= 0.028 aproximadamente, o en porcentaje un 2.781%.
 
 
 
@@ -265,10 +267,12 @@ poder_sup <- pnorm(x2, mean = media_verdadera, sd = SE, lower.tail = FALSE)
 poder <- poder_inf + poder_sup
 beta <- 1 - poder
 
+beta_porcenatje <- beta * 100
+
 # Imprimir la probabilidad de cometer un error Tipo II
-print(paste("Probabilidad de cometer error de Tipo II =", beta))
+print(paste("Probabilidad de cometer error de Tipo II =", beta, " o de porcentaje =", sprintf("%.3f%%", beta_porcenatje)))
 ```
-Si tuviéramos como verdadera media 10,2[L] con los limites establecidos previamente para rechazar la hipótesis nula, la probabilidad de que cometa un error de tipo II sería β: 0.58
+Si tuviéramos como verdadera media 10,2[L] con los limites establecidos previamente para rechazar la hipótesis nula, la probabilidad de que cometa un error de tipo II sería β: 0.58, o con un porcentaje de 57.925%.
 
 
 
@@ -340,8 +344,17 @@ El poder aumenta a medida que la verdadera media se aleja de la media nula tenie
 # Pregunta 4
 Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder estadístico de 0,75 y un nivel de significación de 0,05?    
 
-Cómo nos preguntan sobre la cantidad de bidones y que además nos entregan el poder estadístico y el nivel de significación α podemos utilizar la función pwr.norm.test() otorgándole valor NULL al tamaño de la muestra para que nos lo retorne y sepamos la cantidad de bidones.
+Como nos preguntan sobre la cantidad de bidones y que además nos entregan el poder estadístico y el nivel de significación α podemos utilizar la función pwr.norm.test() otorgándole valor NULL al tamaño de la muestra para que nos lo retorne y sepamos la cantidad de bidones; además de esto tenemos que el valor real establecido en la pregunta 2 es 10.2, por lo cual se obtiene la diferencia de medias para poder identificar el sentido de la prueba, ya sea si es greater o lower.
 
+```{r}
+volumen_medio <- 10
+volumen_real <- 10.2
+
+diferencia_medias <- round(volumen_real - volumen_medio, 1)
+print(paste("La diferencia de medias da =", diferencia_medias))
+```
+
+Con una diferencia de 0.2 obtenemos solo por el lado derecho ("greater") el tamaño de muestra.
 
 ```{r}
 #Se definen el nivel de significancia y poder dados en el enunciado
@@ -352,7 +365,7 @@ poder = 0.75
 d = (media_verdadera - media_poblacional)/desviacion_estandar
 
 # Se usa pwr.norm.test para una prueba bilateral dandole vaor NULL a n que corresponde al tamaño de la muestra.
-resultado = pwr.norm.test(d = d, n = NULL, sig.level = alpha, power = poder, alternative = "two.sided")
+resultado = pwr.norm.test(d = d, n = NULL, sig.level = alpha, power = poder, alternative = "greater")
 print(resultado)
 
 #Se extrae el dato del tamaño de la muestra del calculo anterior
