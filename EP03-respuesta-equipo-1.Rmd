@@ -50,8 +50,10 @@ if (!requireNamespace('tidyr', quietly = TRUE)){
 library(tidyr)
 ```
 
+----- 
+
 # Enunciado
-En una planta química hay dos máquinas que envasan detergentes industriales en bidones con un volumen de producto que sigue una distribución normal con desviación estándar de 1 litro. La ingeniera a cargo de la planta debe asegurar que los bidones se están llenando con una media de 10 litros. Pero ella tiene la sospecha de que hay desviaciones en esta media, lo que piensa confirmar usando una muestra aleatoria de 100 envases (50 de cada una de las máquinas). También cree que hay diferencia en el cumplimiento del volumen requerido entre la máquina más antigua y la más moderna, que han de andar por el 90% y 96% de los bidones, respectivamente.
+#### En una planta química hay dos máquinas que envasan detergentes industriales en bidones con un volumen de producto que sigue una distribución normal con desviación estándar de 1 litro. La ingeniera a cargo de la planta debe asegurar que los bidones se están llenando con una media de 10 litros. Pero ella tiene la sospecha de que hay desviaciones en esta media, lo que piensa confirmar usando una muestra aleatoria de 100 envases (50 de cada una de las máquinas). También cree que hay diferencia en el cumplimiento del volumen requerido entre la máquina más antigua y la más moderna, que han de andar por el 90% y 96% de los bidones, respectivamente.
 
 A partir del enunciado podemos recolectar los siguientes datos: 
 
@@ -76,9 +78,10 @@ En lenguaje matemático:
 - **H₀:** $\mu = 10$ litros
 - **Hₐ:** $\mu \neq 10$ litros
 
+-------
     
 ## Pregunta 1
-Si la ingeniera piensa rechazar la hipótesis nula cuando la muestra presente una media menor a 9,78 litros o mayor a 10,22 litros, ¿cuál es la probabilidad de que cometa un error de tipo I? Para responder, generen un gráfico de la distribución muestral de las medias hipotetizada en donde se marquen las zonas correspondientes a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. Tome como ejemplo los scripts presentados en la lectura sobre poder estadístico.   
+#### Si la ingeniera piensa rechazar la hipótesis nula cuando la muestra presente una media menor a 9,78 litros o mayor a 10,22 litros, ¿cuál es la probabilidad de que cometa un error de tipo I? Para responder, generen un gráfico de la distribución muestral de las medias hipotetizada en donde se marquen las zonas correspondientes a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. Tome como ejemplo los scripts presentados en la lectura sobre poder estadístico.   
 
 Como nos dicen que la media puede ser rechazada si esta es "menor a" o "mayor a" podemos decir que estamos ante una prueba bilateral.
 Para identificar la probabilidad de cometer un error de tipo I debemos saber nuestros límites de rechazo, los cuáles están planteados en el enunciado.
@@ -157,11 +160,11 @@ A partir de los límites de rechazo de la hipótesis nula planteados en el enunc
 
 
 
+----------
 
 
-
-# Pregunta 2 
-Si el verdadero volumen medio de los bidones fuera de 10,2 litros, ¿cuál sería la probabilidad de que la ingeniera, que obviamente no conoce este dato, cometa un error de tipo II? Para responder, agregue al gráfico anterior la verdadera distribución muestral de las medias y marquen (con otro color) la zona correspondiente a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. También hay ejemplos de este procedimiento en la lectura sobre poder estadístico.    
+## Pregunta 2 
+#### Si el verdadero volumen medio de los bidones fuera de 10,2 litros, ¿cuál sería la probabilidad de que la ingeniera, que obviamente no conoce este dato, cometa un error de tipo II? Para responder, agregue al gráfico anterior la verdadera distribución muestral de las medias y marquen (con otro color) la zona correspondiente a la probabilidad solicitada, para luego, basándose en este gráfico, calcular el área correspondiente. También hay ejemplos de este procedimiento en la lectura sobre poder estadístico.    
 
 Como ahora tenemos el verdadero volumen medio debemos compararla con la media nula de la hipótesis para evaluar como se comportan los errores de tipo I y tipo II debido a que la verdadera media no es igual a la media nula.
 
@@ -274,10 +277,11 @@ print(paste("Probabilidad de cometer error de Tipo II =", beta, " o de porcentaj
 ```
 Si tuviéramos como verdadera media 10,2[L] con los limites establecidos previamente para rechazar la hipótesis nula, la probabilidad de que cometa un error de tipo II sería β: 0.58, o con un porcentaje de 57.925%.
 
+-----------
 
 
-# Pregunta 3
-Como no se conoce el verdadero volumen medio, genere un gráfico del poder estadístico con las condiciones anteriores, pero suponiendo que el verdadero volumen medio podría variar de 9,5 a 10,5 litros. Hay un ejemplo de este tipo de gráfico en la lectura sobre poder estadístico.    
+## Pregunta 3
+#### Como no se conoce el verdadero volumen medio, genere un gráfico del poder estadístico con las condiciones anteriores, pero suponiendo que el verdadero volumen medio podría variar de 9,5 a 10,5 litros. Hay un ejemplo de este tipo de gráfico en la lectura sobre poder estadístico.    
 
 En este caso como nos entregan la información de que el volumen medio puede variar, nos quiere decir que veamos como se comporta el poder a medida que nos acercamos o alejamos de la media nula (10 L)
 
@@ -341,8 +345,10 @@ print(g.3.bilateral)
 En este gráfico podemos apreciar el como se comporta el poder al alejarse o acercarse a la media nula (10 L).    
 El poder aumenta a medida que la verdadera media se aleja de la media nula teniendo un poder de 1 que indica que siempre se detecta la diferencia entre medias. En cambio el poder estádistico diminuye a 0 al estar cerca de la media nula, indicando que es difícil rechazar la hipótesis nula.
 
-# Pregunta 4
-Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder estadístico de 0,75 y un nivel de significación de 0,05?    
+-----------
+
+## Pregunta 4
+#### Considerando un volumen medio de 10 litros, ¿cuántos bidones deberían revisarse para conseguir un poder estadístico de 0,75 y un nivel de significación de 0,05?    
 
 Como nos preguntan sobre la cantidad de bidones y que además nos entregan el poder estadístico y el nivel de significación α podemos utilizar la función pwr.norm.test() otorgándole valor NULL al tamaño de la muestra para que nos lo retorne y sepamos la cantidad de bidones; además de esto tenemos que el valor real establecido en la pregunta 2 es 10.2, por lo cual se obtiene la diferencia de medias para poder identificar el sentido de la prueba, ya sea si es greater o lower.
 
@@ -375,8 +381,11 @@ n = ceiling(n)
 cat("La cantidad de bidones a revisar para conseguir un poder de 75% mediante un nivel de significancia del 5% son:", n)
 ```
 
-# Pregunta 5
-¿Alcanzaría esta muestra para detectar la diferencia que la ingeniera sospecha que existe entre las dos máquinas de la planta con las mismas probabilidades de cometer errores?  
+
+----------
+
+## Pregunta 5
+#### ¿Alcanzaría esta muestra para detectar la diferencia que la ingeniera sospecha que existe entre las dos máquinas de la planta con las mismas probabilidades de cometer errores?  
 
 Como ahora nos preguntan sobre las dos máquinas debemos trabajar con dos proporciones, y como también menciona el enunciado es la diferencia entre estas dos proporciones, las cuáles también sabemos poseen la misma cantidad de muestra (50 envases c/u). Por lo tanto, debemos trabajar con pwr.2p.test(...)
 
@@ -429,3 +438,5 @@ cat("
 ```
 Para concluir sobre la diferencia en ambas máquinas habría que necesitar muestras de 240 bidones de cada una de ellas para obtener el poder estadístico solicitado de 90% y un nivel de significación del 5%.   
 Por el resultado obtenido en la pergunta 4 de muestras de 135 bidones en total, implicaría unos 67 bidones por máquina, los cuáles no son suficientes para poder diferenciar entre ambas, puesto que se necesitan al menos 240 bidones para ello.
+
+-------------
