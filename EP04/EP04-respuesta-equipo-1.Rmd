@@ -1,0 +1,60 @@
+---
+title: "EP04"
+author: "Equipo 1"
+date: "2024-10-14"
+output:
+    html_document:
+    highlight: tango
+    word_document: default
+    pdf_document: default
+---
+
+<style>
+body {
+  font-family: 'Calibri', sans-serif;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Pregunta 1
+
+Una agencia de marketing desea determinar si hay una diferencia significativa en la efectividad de tres estrategias publicitarias utilizadas para promocionar un nuevo producto. Para ello, se ha recopilado información de personas que fueron expuestas a las tres estrategias publicitarias, registrando si mostraron una aceptación (A) o rechazo (R) a cada una de ellas.
+¿Qué puede concluir la agencia de marketing sobre la efectividad de las estrategias publicitarias para promover el nuevo producto?
+Indicación: obtenga la muestra de 50 personas a partir del archivo “EP04 Datos.csv” que se encuentra en el directorio compartido, usando la semilla 102. Considere un nivel de significación α = 0,05.
+
+
+```{r}
+datosCSV <- read_csv2("EP04 Datos.csv")
+
+set.seed(102)
+
+alfa <- 0.05
+
+personas <- 1:50
+muestra <- datosCSV[sample(nrow(datosCSV), 50), ]
+estrategia1 <- muestra$estrategia_1
+estrategia2 <- muestra$estrategia_2
+estrategia3 <- muestra$estrategia_3
+
+datos <- data.frame(personas, estrategia1, estrategia2, estrategia3)
+
+datos <- datos %>% pivot_longer(c("estrategia1", "estrategia2", "estrategia3"),
+                                names_to = "estrategias",
+                                values_to = "resultado")
+
+datos[["personas"]] <- factor(datos[["personas"]])
+datos[["estrategias"]] <- factor(datos[["estrategias"]])
+
+prueba <- cochran.qtest(resultado ~ estrategias | personas,
+                        data = datos, alpha = alfa)
+
+print(prueba)
+
+post_hoc <- pairwiseMcnemar(resultado ~ estrategias | personas,
+                            data = datos, method = "holm")
+
+print(post_hoc)
+```
