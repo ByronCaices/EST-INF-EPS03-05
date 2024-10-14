@@ -28,7 +28,7 @@ Indicación: obtenga la muestra de 50 personas a partir del archivo “EP04 Dato
 Para esta pregunta es necesario leer los datos entregados, por lo cual se realiza esto de la manera:
 
 ```{r}
-datosCSV <- read_csv2("EP04 Datos.csv")
+datosCSV <- read.csv2("EP04 Datos.csv")
 ```
 
 Luego de esto para generar la muestra se realiza tanto la funcion sample como el establecimiento de la semilla a utilizar, la cual es 102:
