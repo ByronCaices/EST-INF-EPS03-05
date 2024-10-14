@@ -19,6 +19,27 @@ body {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r, echo =FALSE, warning=FALSE, message=FALSE}
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+
+if (!requireNamespace('tidyverse', quietly = TRUE)){
+  install.packages('tidyverse')
+}
+library(tidyverse)
+if (!requireNamespace('RVAideMemoire', quietly = TRUE)){
+  install.packages('RVAideMemoire')
+}
+library(RVAideMemoire)
+if (!requireNamespace('rcompanion', quietly = TRUE)){
+  install.packages('rcompanion')
+}
+library(rcompanion)
+if (!requireNamespace('dplyr', quietly = TRUE)){
+  install.packages('dplyr')
+}
+library(dplyr)
+```
+
 ## Pregunta 1
 
 Una agencia de marketing desea determinar si hay una diferencia significativa en la efectividad de tres estrategias publicitarias utilizadas para promocionar un nuevo producto. Para ello, se ha recopilado información de personas que fueron expuestas a las tres estrategias publicitarias, registrando si mostraron una aceptación (A) o rechazo (R) a cada una de ellas.
