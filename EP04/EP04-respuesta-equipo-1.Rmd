@@ -25,16 +25,37 @@ Una agencia de marketing desea determinar si hay una diferencia significativa en
 ¿Qué puede concluir la agencia de marketing sobre la efectividad de las estrategias publicitarias para promover el nuevo producto?
 Indicación: obtenga la muestra de 50 personas a partir del archivo “EP04 Datos.csv” que se encuentra en el directorio compartido, usando la semilla 102. Considere un nivel de significación α = 0,05.
 
+Para esta pregunta es necesario leer los datos entregados, por lo cual se realiza esto de la manera:
 
 ```{r}
 datosCSV <- read_csv2("EP04 Datos.csv")
+```
 
+Luego de esto para generar la muestra se realiza tanto la funcion sample como el establecimiento de la semilla a utilizar, la cual es 102:
+
+```{r}
 set.seed(102)
+muestra <- datosCSV[sample(nrow(datosCSV), 50), ]
+```
 
+Ahora, en terminos del problema propuesto, se realizara el enfoque dado a que se tienen 3 estrategias distintas de verificar si existe alguna diferencia en la efectividad de alguna de las estrategias sobre otras, dejandonos con las hipotesis:
+
+H0 = La efectividad que presentan las diferentes estrategias es la misma entre si
+
+HA = La efectividad que presentan las diferentes estrategias es diferente entre si
+
+Debido a que se busca si existe una diferencia significativa entre las distintas estrategias y ademas de tener mas de dos observaciones apareadas (estrategia 1, 2 y 3), se elige la prueba Cocheran. Para esto se deben cumplir ciertas condiciones, la primera es que si las variables de respuestas son dicotómicas, ósea que tienen dos resultados, en este caso se tiene que puede estar tanto aprobado como rechazado, por lo que se cumple este aspecto, ademas de esto se tiene que las variables independientes son categóricas, ya que separan las muestras base a la estrategia aplicada, ademas de esto se tiene que las observaciones son independientes entre si, ya que ninguna persona es igual a otra, ni esta relacionada su experiencia con otra, por ultimo se tiene que el tamaño de la muestra cumpla con la formula:
+
+b * k >= 24
+
+En este caso se tiene b como el numero de bloques (en este caso 50), y k como la cantidad de tratamientos (en este caso 3), por lo cual tenemos como resultado 1500, de lo cual cumple con lo necesitado para la prueba, por ultimo se aclara que la población de muestra no cumple con el 10% de la población, que en este caso 50 de 1500 observaciones, siendo esto un 3,333%.
+
+Aplicando el test con un nivel de significancia de 0.05, nos da como resultado:
+
+```{r}
 alfa <- 0.05
 
 personas <- 1:50
-muestra <- datosCSV[sample(nrow(datosCSV), 50), ]
 estrategia1 <- muestra$estrategia_1
 estrategia2 <- muestra$estrategia_2
 estrategia3 <- muestra$estrategia_3
@@ -52,9 +73,6 @@ prueba <- cochran.qtest(resultado ~ estrategias | personas,
                         data = datos, alpha = alfa)
 
 print(prueba)
-
-post_hoc <- pairwiseMcnemar(resultado ~ estrategias | personas,
-                            data = datos, method = "holm")
-
-print(post_hoc)
 ```
+
+Con el resultado obtenido podemos verificar que el p-value es mayor que el nivel de significancia dado por alfa, tal que se tiene que 0.05 < 0.4281, por lo cual no existe evidencia suficiente como para rechazar la hipotesis nula en favor de la alternativa, que en este caso es que existe alguna diferencia en eficacia entre alguna estrategia presentada.
