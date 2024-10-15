@@ -143,10 +143,10 @@ Villano     pre programa        post programa
 villano <- seq(1:20)
 
 # Datos pre-programa: 17 hostiles y 3 no hostiles
-pre_programa <- c(rep("Hostil", 17), rep("No hostil", 3))
+pre_programa <- c(rep("No hostil", 2),rep("Hostil", 17), rep("No hostil", 1))
 
 # Datos post-programa: 3 hostiles y 17 no hostiles 
-post_programa <- c(rep("Hostil", 3), rep("No hostil", 17))
+post_programa <- c(rep("No hostil", 17),rep("Hostil", 3))
 
 # Crear el data frame
 datos <- data.frame(villano, pre_programa, post_programa)
@@ -168,5 +168,5 @@ cat("Prueba de McNemar usando las muestras:\n")
 print(prueba_2)
 ```
 
-Al considerar un nivel de significancia α = 0.05 y un p-value = 0.000512, donde p < α. Se rechaza la hipótesis nula. Esto indica que si hay evidencia suficiente para aceptar la hipótesis alternativa indicando que el programa ha sido efectivo para reducir la hostilidad de los villanos.
+Al considerar un nivel de significancia α = 0.05 y un p-value = 0.001154, donde p < α. Se rechaza la hipótesis nula. Esto indica que si hay evidencia suficiente para aceptar la hipótesis alternativa indicando que el programa ha sido efectivo para reducir la hostilidad de los villanos.
 
