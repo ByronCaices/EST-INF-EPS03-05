@@ -97,3 +97,76 @@ print(prueba)
 ```
 
 Con el resultado obtenido podemos verificar que el p-value es mayor que el nivel de significancia dado por alfa, tal que se tiene que 0.05 < 0.4281, por lo cual no existe evidencia suficiente como para rechazar la hipotesis nula en favor de la alternativa, que en este caso es que existe alguna diferencia en eficacia entre alguna estrategia presentada.
+
+
+## Pregunta 3
+Una organización dedicada a la rehabilitación de villanos ha observado que muchos de ellos ingresan al programa con niveles elevados de hostilidad. Para abordar este problema, decidieron implementar un nuevo programa de bienvenida diseñado para reducir la hostilidad y facilitar la reintegración a la sociedad. Para evaluar la efectividad de este programa, se reclutó a un grupo de 20 villanos a quienes se les midió el nivel de hostilidad (alto o bajo) antes y después de participar en el programa de bienvenida. Los resultados se presentan a continuación:
+2 villanos no mostraron hostilidad ni antes ni después.
+15 villanos que inicialmente mostraban hostilidad dejaron de hacerlo.
+2 villanos mantuvieron un elevado nivel de hostilidad.
+el otro villano desarrolló síntomas de hostilidad tras participar en el programa cuando antes no era hostil.
+¿Qué se puede concluir acerca de la efectividad del nuevo programa de bienvenida para reducir la hostilidad en los villanos?
+
+En esta pregunta nos solicitan de concluir acerca de la efectividad de un programa aplicado sobre un grupo de villanos. Como nos entregan los datos pre y post programa se crea una muestra emparejada sobre los 20 mismos villanos. Además nos entregan los dos casos diferentes para el mismo grupo. Por lo que podemos concluir que se utiliza la prueba de McNemar.
+
+Planteamos las hipótesis de McNemar:
+H0: No hay cambios significativos en los villanos.
+HA: Si hay cambios significativos en los villanos.
+
+Resultado final de cada villano:
+
+Villano     pre programa        post programa
+1             no hostil           no hostil
+2             no hostil           no hostil
+3               hostil            no hostil
+4               hostil            no hostil
+5               hostil            no hostil
+6               hostil            no hostil
+7               hostil            no hostil
+8               hostil            no hostil    
+9               hostil            no hostil
+10              hostil            no hostil
+11              hostil            no hostil
+12              hostil            no hostil
+13              hostil            no hostil
+14              hostil            no hostil
+15              hostil            no hostil
+16              hostil            no hostil
+17              hostil            no hostil
+18              hostil            hostil
+19              hostil            hostil
+20              no hostil         hostil
+
+
+```{r}
+# Construir la tabla de contingencia.
+villano <- seq(1:20)
+
+# Datos pre-programa: 17 hostiles y 3 no hostiles
+pre_programa <- c(rep("Hostil", 17), rep("No hostil", 3))
+
+# Datos post-programa: 3 hostiles y 17 no hostiles 
+post_programa <- c(rep("Hostil", 3), rep("No hostil", 17))
+
+# Crear el data frame
+datos <- data.frame(villano, pre_programa, post_programa)
+
+# Construir la tabla de contingencia
+tabla <- table(pre_programa, post_programa)
+print(tabla)
+
+# Aplicar la prueba de McNemar a la tabla de contingencia.
+prueba_1 <- mcnemar.test(tabla)
+cat("\n")
+cat("Prueba de McNemar usando la tabla de contingencia: \n") 
+print(prueba_1)
+
+# Aplicar la prueba de McNemar directamente a las muestras.
+prueba_2 <- mcnemar.test(pre_programa, post_programa)
+cat("\n")
+cat("Prueba de McNemar usando las muestras:\n")
+print(prueba_2)
+```
+
+Al considerar un nivel de significancia α = 0.05 y un p-value = 0.000512, donde p < α. Se rechaza la hipótesis nula. Esto indica que si hay evidencia suficiente para aceptar la hipótesis alternativa indicando que el programa ha sido efectivo para reducir la hostilidad de los villanos.
+
