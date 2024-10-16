@@ -170,3 +170,38 @@ print(prueba_2)
 
 Al considerar un nivel de significancia α = 0.05 y un p-value = 0.001154, donde p < α. Se rechaza la hipótesis nula. Esto indica que si hay evidencia suficiente para aceptar la hipótesis alternativa indicando que el programa ha sido efectivo para reducir la hostilidad de los villanos.
 
+
+## Pregunta 4
+
+Durante un apocalipsis zombie, un grupo de 10 mujeres y 14 hombres sobrevivientes se encuentra buscando desesperadamente refugio y encuentran dos edificios abandonados que podrían servir: una escuela y un centro comercial. Algunas personas piensan que la escuela es más segura, mientras que otras consideran que el centro comercial es más seguro. Después de elegir sus opciones, se observa que 6 mujeres y 10 hombres eligen refugiarse en la escuela abandonada mientras que los otros optan por el centro comercial.
+¿Hay relación entre el sexo de la persona y el edificio abandonado que encuentra más seguro?
+
+Para este problema se presenta una busqueda de existencia de relacion entre dos variables categoricas, por lo cual se opto, debido a que las dos son variables dicotomicas, por la prueba fisher, la cual se veria con la prueba de independencia de los datos, buscando que nos de que exista alguna relacion entre el sexo y el lugar donde se refugiaron, nos deja como hipotesis:
+
+H0: Las variables sexo de la persona y edificio abandonado son independendientes.
+HA: Las variables sexo de la persona y edificio abandonado estan relacionadas.
+
+Para comprobar si es valido el uso de esta prueba se hace la verificacion de sus condiciones, de lo cual se presenta que la muestra fue obtenida de manera aleatoria entre los supervivientes, ademas esto representa menos del 10% de la población mundial por lo tanto, se verifica la independencia de las muestras.
+
+```{r}
+# Datos
+sexo <- c(rep("Mujer", 6), rep("Mujer", 4), rep("Hombre", 10), rep("Hombre", 4))
+refugio <- c(rep("Escuela", 6), rep("Centro Comercial", 4), rep("Escuela", 10), rep("Centro Comercial", 4))
+
+# Crear DataFrame
+datos <- data.frame(sexo, refugio)
+
+# Crear tabla de contingencia
+tabla <- xtabs(~ sexo + refugio, datos)
+
+# Mostrar la tabla
+print(tabla)
+```
+
+```{r}
+# Aplicar la prueba exacta de Fisher a la tabla de contingencia.
+prueba <- fisher.test(tabla)
+cat("\n")
+cat("Prueba exacta de Fisher usando la tabla de contingencia:\n")
+print(prueba)
+```
