@@ -364,15 +364,15 @@ font-family: 'Calibri', sans-serif;
 </style>
 <div id="pregunta-1" class="section level2">
 <h2>Pregunta 1</h2>
-<div id="una-agencia-de-marketing-desea-determinar-si-hay-una-diferencia-significativa-en-la-efectividad-de-tres-estrategias-publicitarias-utilizadas-para-promocionar-un-nuevo-producto.-para-ello-se-ha-recopilado-información-de-personas-que-fueron-expuestas-a-las-tres-estrategias-publicitarias-registrando-si-mostraron-una-acept-ación-a-o-rechazo-r-a-cada-una-de-ellas.-qué-puede-concluir-la-agencia-de-marketing-sobre-la-efectividad-de-las-estrategias-publicitarias-para-promover-el-nuevo-producto" class="section level4">
+<div id="una-agencia-de-marketing-desea-determinar-si-hay-una-diferencia-significativa-en-la-efectividad-de-tres-estrategias-publicitarias-utilizadas-para-promocionar-un-nuevo-producto.-para-ello-se-ha-recopilado-información-de-personas-que-fueron-expuestas-a-las-tres-estrategias-publicitarias-registrando-si-mostraron-una-aceptación-a-o-rechazo-r-a-cada-una-de-ellas.-qué-puede-concluir-la-agencia-de-marketing-sobre-la-efectividad-de-las-estrategias-publicitarias-para-promover-el-nuevo-producto" class="section level4">
 <h4>Una agencia de marketing desea determinar si hay una diferencia
 significativa en la efectividad de tres estrategias publicitarias
 utilizadas para promocionar un nuevo producto. Para ello, se ha
 recopilado información de personas que fueron expuestas a las tres
-estrategias publicitarias, registrando si mostraron una acept ación (A)
-o rechazo (R) a cada una de ellas. <strong>¿Qué puede concluir la
-agencia de marketing sobre la efectividad de las estrategias
-publicitarias para promover el nuevo producto?</strong></h4>
+estrategias publicitarias, registrando si mostraron una aceptación (A) o
+rechazo (R) a cada una de ellas. <strong>¿Qué puede concluir la agencia
+de marketing sobre la efectividad de las estrategias publicitarias para
+promover el nuevo producto?</strong></h4>
 <p>Indicación: obtenga la muestra de 50 personas a partir del archivo
 “EP04 Datos.csv” que se encuentra en el directorio compartido, usando la
 semilla 102. Considere un nivel de significación α = 0,05.</p>
@@ -398,21 +398,21 @@ presentan las diferentes estrategias es diferente entre sí</p></li>
 las distintas estrategias y además de tener mas de dos observaciones
 apareadas (estrategia 1, 2 y 3), se elige la prueba Cochran. Para esto
 se deben cumplir ciertas condiciones, la primera es que si las variables
-de respuestas son dicotómicas, ósea que tienen dos resultados, en este
+de respuestas son dicotómicas, o sea que tienen dos resultados, en este
 caso se tiene que puede estar tanto aprobado como rechazado, por lo que
 se cumple este aspecto, además de esto se tiene que las variables
 independientes son categóricas, ya que separan las muestras base a la
 estrategia aplicada, además de esto se tiene que las observaciones son
 independientes entre sí, ya que ninguna persona es igual a otra, ni está
 relacionada su experiencia con otra, por último se tiene que el tamaño
-de la muestra cumpla con la formula:</p>
+de la muestra cumpla con la fórmula:</p>
 <p><span class="math display">\[b * k &gt;= 24\]</span></p>
 <p>En este caso se tiene b como el numero de bloques (en este caso 50),
 y k como la cantidad de tratamientos (en este caso 3), por lo cual
 tenemos como resultado 1500, de lo cual cumple con lo necesitado para la
-prueba, por ultimo se aclara que la población de muestra no cumple con
-el 10% de la población, que en este caso 50 de 1500 observaciones,
-siendo esto un 3,333%.</p>
+prueba, por último se aclara que la población de muestra no cumple con
+el 10% de la población. En este caso 50 de 1500 observaciones, siendo
+esto un 3,333%.</p>
 <p>Aplicando el test con un nivel de significancia de 0.05, nos da como
 resultado:</p>
 <pre class="r"><code>alfa &lt;- 0.05
@@ -488,7 +488,7 @@ hipótesis:</p>
 <li><p><span class="math inline">\(H_0\)</span>: Existe la misma
 proporción de especies en ambas reservas.</p></li>
 <li><p><span class="math inline">\(H_A\)</span>: Las proporciones de
-especie son distintas entre las reservas.</p></li>
+especies son distintas entre las reservas.</p></li>
 </ul>
 <pre class="r"><code># Creamos tabla de contingencia
 etosha &lt;- c(5,10,15)
@@ -548,9 +548,9 @@ villanos?</strong></h4>
 <p>En esta pregunta nos solicitan de concluir acerca de la efectividad
 de un programa aplicado sobre un grupo de villanos. Como nos entregan
 los datos pre y post programa se crea una muestra emparejada sobre los
-20 mismos villanos. Además nos entregan los dos casos diferentes para el
-mismo grupo. Por lo que podemos concluir que se utiliza la prueba de
-McNemar.</p>
+20 mismos villanos. Además nos entregan los dos condiciones diferentes
+(hostil y no hostil) para el mismo grupo. Por lo que podemos concluir
+que se utiliza la prueba de McNemar.</p>
 <p>Planteamos las hipótesis de McNemar:</p>
 <ul>
 <li><p><span class="math inline">\(H_0\)</span>: No hay cambios

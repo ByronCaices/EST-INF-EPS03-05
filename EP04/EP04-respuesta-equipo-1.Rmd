@@ -42,7 +42,7 @@ library(dplyr)
 
 ## Pregunta 1
 
-#### Una agencia de marketing desea determinar si hay una diferencia significativa en la efectividad de tres estrategias publicitarias utilizadas para promocionar un nuevo producto. Para ello, se ha recopilado información de personas que fueron expuestas a las tres estrategias publicitarias, registrando si mostraron una acept ación (A) o rechazo (R) a cada una de ellas. **¿Qué puede concluir la agencia de marketing sobre la efectividad de las estrategias publicitarias para promover el nuevo producto?**
+#### Una agencia de marketing desea determinar si hay una diferencia significativa en la efectividad de tres estrategias publicitarias utilizadas para promocionar un nuevo producto. Para ello, se ha recopilado información de personas que fueron expuestas a las tres estrategias publicitarias, registrando si mostraron una aceptación (A) o rechazo (R) a cada una de ellas. **¿Qué puede concluir la agencia de marketing sobre la efectividad de las estrategias publicitarias para promover el nuevo producto?**
 
 Indicación: obtenga la muestra de 50 personas a partir del archivo “EP04 Datos.csv” que se encuentra en el directorio compartido, usando la semilla 102. Considere un nivel de significación α = 0,05.
 
@@ -65,11 +65,11 @@ Ahora, en términos del problema propuesto, se realizará el enfoque dado a que 
 
 - \(H_A\): La efectividad que presentan las diferentes estrategias es diferente entre sí
 
-Debido a que se busca si existe una diferencia significativa entre las distintas estrategias y además de tener mas de dos observaciones apareadas (estrategia 1, 2 y 3), se elige la prueba Cochran. Para esto se deben cumplir ciertas condiciones, la primera es que si las variables de respuestas son dicotómicas, ósea que tienen dos resultados, en este caso se tiene que puede estar tanto aprobado como rechazado, por lo que se cumple este aspecto, además de esto se tiene que las variables independientes son categóricas, ya que separan las muestras base a la estrategia aplicada, además de esto se tiene que las observaciones son independientes entre sí, ya que ninguna persona es igual a otra, ni está relacionada su experiencia con otra, por último se tiene que el tamaño de la muestra cumpla con la formula:
+Debido a que se busca si existe una diferencia significativa entre las distintas estrategias y además de tener mas de dos observaciones apareadas (estrategia 1, 2 y 3), se elige la prueba Cochran. Para esto se deben cumplir ciertas condiciones, la primera es que si las variables de respuestas son dicotómicas, o sea que tienen dos resultados, en este caso se tiene que puede estar tanto aprobado como rechazado, por lo que se cumple este aspecto, además de esto se tiene que las variables independientes son categóricas, ya que separan las muestras base a la estrategia aplicada, además de esto se tiene que las observaciones son independientes entre sí, ya que ninguna persona es igual a otra, ni está relacionada su experiencia con otra, por último se tiene que el tamaño de la muestra cumpla con la fórmula:
 
 \[b * k >= 24\]
 
-En este caso se tiene b como el numero de bloques (en este caso 50), y k como la cantidad de tratamientos (en este caso 3), por lo cual tenemos como resultado 1500, de lo cual cumple con lo necesitado para la prueba, por ultimo se aclara que la población de muestra no cumple con el 10% de la población, que en este caso 50 de 1500 observaciones, siendo esto un 3,333%.
+En este caso se tiene b como el numero de bloques (en este caso 50), y k como la cantidad de tratamientos (en este caso 3), por lo cual tenemos como resultado 1500, de lo cual cumple con lo necesitado para la prueba, por último se aclara que la población de muestra no cumple con el 10% de la población. En este caso 50 de 1500 observaciones, siendo esto un 3,333%.
 
 Aplicando el test con un nivel de significancia de 0.05, nos da como resultado:
 
@@ -122,7 +122,7 @@ Como en esta pregunta nos solicitan comparar dos poblaciones (variable dicotómi
 
 - \(H_0\): Existe la misma proporción de especies en ambas reservas.
 
-- \(H_A\): Las proporciones de especie son distintas entre las reservas.
+- \(H_A\): Las proporciones de especies son distintas entre las reservas.
 
 ```{r}
 # Creamos tabla de contingencia
@@ -159,7 +159,7 @@ Dado que `p = 0.4153` y suponiendo un nivel de significación $\alpha$ = 0.05 $\
 
 #### **¿Qué se puede concluir acerca de la efectividad del nuevo programa de bienvenida para reducir la hostilidad en los villanos?**
 
-En esta pregunta nos solicitan de concluir acerca de la efectividad de un programa aplicado sobre un grupo de villanos. Como nos entregan los datos pre y post programa se crea una muestra emparejada sobre los 20 mismos villanos. Además nos entregan los dos casos diferentes para el mismo grupo. Por lo que podemos concluir que se utiliza la prueba de McNemar.
+En esta pregunta nos solicitan de concluir acerca de la efectividad de un programa aplicado sobre un grupo de villanos. Como nos entregan los datos pre y post programa se crea una muestra emparejada sobre los 20 mismos villanos. Además nos entregan los dos condiciones diferentes (hostil y no hostil) para el mismo grupo. Por lo que podemos concluir que se utiliza la prueba de McNemar.
 
 Planteamos las hipótesis de McNemar:
 
