@@ -117,7 +117,7 @@ Con el resultado obtenido podemos verificar que el p-value es mayor que el nivel
 - Antílopes: 14
 - Cebras: 10
 
-Como en esta pregunta nos solicitan comparar dos poblaciones (variable dicotómica: Etosha - Mahago) y verificar si presentan la misma proporción de especies entre ambas reservas, se plantean las siguientes hipótesis:
+Como en esta pregunta nos solicitan comparar dos poblaciones (variable dicotómica: Etosha - Mahago) y verificar si presentan la misma proporción de especies entre ambas reservas, corresponde utilizar una prueba chi-cuadrado de homogeneidad. Ante esto se plantean las siguientes hipótesis:
 
 
 - \(H_0\): Existe la misma proporción de especies en ambas reservas.
