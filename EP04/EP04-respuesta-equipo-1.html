@@ -482,14 +482,17 @@ en ambas reservas?</strong></h4>
 </ul>
 <p>Como en esta pregunta nos solicitan comparar dos poblaciones
 (variable dicotómica: Etosha - Mahago) y verificar si presentan la misma
-proporción de especies entre ambas reservas, se plantean las siguientes
-hipótesis:</p>
+proporción de especies entre ambas reservas, corresponde utilizar una
+prueba chi-cuadrado de homogeneidad. Ante esto se plantean las
+siguientes hipótesis:</p>
 <ul>
 <li><p><span class="math inline">\(H_0\)</span>: Existe la misma
 proporción de especies en ambas reservas.</p></li>
 <li><p><span class="math inline">\(H_A\)</span>: Las proporciones de
 especies son distintas entre las reservas.</p></li>
 </ul>
+<p>Revisamos si podemos hacer chi-cuadrado de homogeneidad verificando
+las observaciones esperadas</p>
 <pre class="r"><code># Creamos tabla de contingencia
 etosha &lt;- c(5,10,15)
 mahago &lt;- c(6,14,10)

@@ -124,6 +124,19 @@ Como en esta pregunta nos solicitan comparar dos poblaciones (variable dicotómi
 
 - \(H_A\): Las proporciones de especies son distintas entre las reservas.
 
+Revisamos si podemos hacer chi-cuadrado de homogeneidad verificando las observaciones esperadas
+```{r}
+primera = c(((30*11)/60), ((30*24)/60), ((30*25)/60))
+segunda = c(((30*11)/60), ((30*24)/60), ((30*25)/60))
+
+tabla <- as.table(rbind(primera, segunda))
+
+dimnames(tabla) <- list(grupo = c("primera", "segunda"), animales = c("Elefantes", "Antílopes", "Cebras"))
+
+print(tabla)
+
+```
+Con esta tabla se ha comprobado que hay más de 5 observaciones por lo que se puede proceder con chi-cuadrado de homogeneidad.
 ```{r}
 # Creamos tabla de contingencia
 etosha <- c(5,10,15)
