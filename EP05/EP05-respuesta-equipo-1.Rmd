@@ -1,0 +1,76 @@
+---
+title: "EP05"
+author: "Equipo 1"
+date: "2024-10-21"
+output:
+    html_document:
+    highlight: tango
+    word_document: default
+    pdf_document: default
+---
+
+<style>
+body {
+  font-family: 'Calibri', sans-serif;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo =FALSE, warning=FALSE, message=FALSE}
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+
+if (!requireNamespace('tidyverse', quietly = TRUE)){
+  install.packages('tidyverse')
+}
+library(tidyverse)
+if (!requireNamespace('RVAideMemoire', quietly = TRUE)){
+  install.packages('RVAideMemoire')
+}
+library(RVAideMemoire)
+if (!requireNamespace('rcompanion', quietly = TRUE)){
+  install.packages('rcompanion')
+}
+library(rcompanion)
+if (!requireNamespace('dplyr', quietly = TRUE)){
+  install.packages('dplyr')
+}
+library(dplyr)
+```
+
+## Enunciado
+
+En una emocionante competencia de cubos Rubik, participantes de Chile, Argentina, Colombia, Uruguay, Perú y Ecuador demostraron su destreza en resolver tres tipos de cubos: 2x2x2, 3x3x3 y Megaminx.
+
+Después del torneo, un grupo de investigadores de la Asociación Mundial del Cubo, interesado en los tiempos que hicieron las jugadoras y los jugadores en la competencia, decidieron estudiar si el país y el tipo de cubo usado en cada prueba tienen influencia en los segundos que se tardan en resolverlos. Para ello usaron una muestra aleatoria de los datos de la competencia, en la cual participaron más de 2.000 personas, con las siguientes variables:
+
+| Variable | Descripción                                                                 |
+|----------|-----------------------------------------------------------------------------|
+| id       | Identificador único de cada participante.                                   |
+| país     | País que representa cada participante (Argentina, Chile, Colombia, Ecuador, Perú, Uruguay). |
+| tipo     | Tipo de cubo usado en la prueba (2x2x2, 3x3x3, Megaminx).                   |
+| tiempo   | Tiempo, en segundos, que toma al participante en resolver el cubo de la prueba. |
+
+
+**¿Existen diferencias en el tiempo de resolución de cubos 2x2x2 entre participantes de Chile, Perú y Argentina?**
+
+- \(H_0:\) El tiempo de resolución promedio necesitado para resolver el cubo de tamaño 2x2x2 es igual para los tres países participantes
+
+\[ \mu_{Chile}^{2x2x2} = \mu_{Peru}^{2x2x2} = \mu_{Argentina}^{2x2x2} \]
+
+- \(H_A:\) El tiempo de resolución promedio necesitado para resolver el cubo de 2x2x2 es diferente para al menos uno de los países. Matemáticamente \( \exists i, j \in \{Chile, Perú, Argentina\}, i \neq j \mid \mu_{i}^{2x2x2} \neq \mu_{j}^{2x2x2} \).
+
+
+- \(H_A:\) Hay al menos un pais que presenta una media de tiempo de resolución distinta a la de los otros Paises
+
+
+```{r}
+# Lectura del archivo CSV
+datos <- read.csv2("EP05 Datos.csv")
+head(datos)
+```
+
+
+
