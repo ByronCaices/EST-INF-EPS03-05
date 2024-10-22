@@ -40,7 +40,9 @@ if (!requireNamespace('dplyr', quietly = TRUE)){
 library(dplyr)
 ```
 
-## Enunciado
+-----------
+
+## **Enunciado**
 
 En una emocionante competencia de cubos Rubik, participantes de Chile, Argentina, Colombia, Uruguay, Perú y Ecuador demostraron su destreza en resolver tres tipos de cubos: 2x2x2, 3x3x3 y Megaminx.
 
@@ -53,8 +55,13 @@ Después del torneo, un grupo de investigadores de la Asociación Mundial del Cu
 | tipo     | Tipo de cubo usado en la prueba (2x2x2, 3x3x3, Megaminx).                   |
 | tiempo   | Tiempo, en segundos, que toma al participante en resolver el cubo de la prueba. |
 
+----------
 
-**¿Existen diferencias en el tiempo de resolución de cubos 2x2x2 entre participantes de Chile, Perú y Argentina?**
+### **¿Existen diferencias en el tiempo de resolución de cubos 2x2x2 entre participantes de Chile, Perú y Argentina?**
+
+----------
+
+#### **Hipótesis**
 
 - \(H_0:\) El tiempo de resolución promedio necesitado para resolver el cubo de tamaño 2x2x2 es igual para los tres países participantes
 
@@ -62,15 +69,68 @@ Después del torneo, un grupo de investigadores de la Asociación Mundial del Cu
 
 - \(H_A:\) El tiempo de resolución promedio necesitado para resolver el cubo de 2x2x2 es diferente para al menos uno de los países. Matemáticamente \( \exists i, j \in \{Chile, Perú, Argentina\}, i \neq j \mid \mu_{i}^{2x2x2} \neq \mu_{j}^{2x2x2} \).
 
-
-- \(H_A:\) Hay al menos un pais que presenta una media de tiempo de resolución distinta a la de los otros Paises
-
+-----------
 
 ```{r}
 # Lectura del archivo CSV
 datos <- read.csv2("EP05 Datos.csv")
 head(datos)
 ```
+
+-------
+
+Para responder esta pregunta requerimos filtrar los datos para participantes de Chile, Perú y Argentina que hayan resuelto el cubo de \( 2x2x2 \)
+
+-------
+
+```{r}
+# Filtrar los datos usando dplyr y el operador pipe (%>%)
+df_filtrado <- datos %>%
+  filter(pais %in% c("Chile", "Perú", "Argentina") & tipo == "2x2x2")
+
+cat("Observaciones:",cantidad_datos <- nrow(df_filtrado),"participantes")
+
+# Mostrar el resultado filtrado
+head(df_filtrado)
+```
+
+----------
+
+#### **Condiciones a verificar**
+
+**El procedimiento ANOVA requiere que se cumplan algunas condiciones:**
+
+1. **La escala con que se mide la variable dependiente tiene las propiedades de una escala de intervalos iguales.**
+
+ - La primera condición se verifica, puesto que si para resolver un cubo de 2x2x2 alguien de un país ya sea Chile, Perú o Argentina este se tarda 20 [seg] mientras que uno de otro país de los mencionados tarda 30 [seg], es la misma diferencia (10 segundos) que se presentaría para otro caso en donde alguien de un cierto país tarda 35 [seg] y otro participante 45 [seg]
+
+2. **Las k muestras son obtenidas de manera aleatoria e independiente desde la(s) población(es) de origen.**
+
+- El enunciado señala que el proceso seguido para obtener los datos garantiza el cumplimiento de la segunda condición 
+
+- *"Para ello usaron una muestra aleatoria de los datos de la competencia, en la cual participaron más de 2.000 personas"*
+
+- Como 120 < 10% de 2000, se puede considerar que las muestras son independientes
+
+3. **Se puede suponer razonablemente que la(s) población(es) de origen sigue(n) una distribución normal.**
+
+
+```{r}
+df_filtrado <- df_filtrado %>% pivot_longer(c("Chile", "Perú", "Argentina"), names_to = "Pais", values_to = "Tiempo")
+
+df_filtrado[["Pais"]] <- factor(df_filtrado[["Pais"]])
+df_
+
+
+```
+
+
+
+4. **Si las muestras provienen de más de una población, estas tienen la misma varianza.**
+
+
+---------   
+
 
 
 
