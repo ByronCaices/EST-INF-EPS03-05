@@ -26,6 +26,14 @@ if (!requireNamespace('tidyverse', quietly = TRUE)){
   install.packages('tidyverse')
 }
 library(tidyverse)
+if (!requireNamespace('ggpubr', quietly = TRUE)){
+  install.packages('ggpubr')
+}
+library(ggpubr)
+if (!requireNamespace('ez', quietly = TRUE)){
+  install.packages('ez')
+}
+library(ez)
 if (!requireNamespace('RVAideMemoire', quietly = TRUE)){
   install.packages('RVAideMemoire')
 }
@@ -102,7 +110,10 @@ head(df_filtrado)
 
 1. **La escala con que se mide la variable dependiente tiene las propiedades de una escala de intervalos iguales.**
 
+
  - La primera condición se verifica, puesto que si para resolver un cubo de 2x2x2 alguien de un país ya sea Chile, Perú o Argentina este se tarda 20 [seg] mientras que uno de otro país de los mencionados tarda 30 [seg], es la misma diferencia (10 segundos) que se presentaría para otro caso en donde alguien de un cierto país tarda 35 [seg] y otro participante 45 [seg]
+ 
+-------------
 
 2. **Las k muestras son obtenidas de manera aleatoria e independiente desde la(s) población(es) de origen.**
 
@@ -112,22 +123,56 @@ head(df_filtrado)
 
 - Como 120 < 10% de 2000, se puede considerar que las muestras son independientes
 
+-------------
+
 3. **Se puede suponer razonablemente que la(s) población(es) de origen sigue(n) una distribución normal.**
+
+- Notamos que los puntos del gráfico Quantil-Quantil (QQ plot) se ajustan a la recta, lo que sugiere que los datos siguen una distribución normal.
 
 
 ```{r}
-df_filtrado <- df_filtrado %>% pivot_longer(c("Chile", "Perú", "Argentina"), names_to = "Pais", values_to = "Tiempo")
 
-df_filtrado[["Pais"]] <- factor(df_filtrado[["Pais"]])
-df_
+# Graficar el QQ plot por país y tiempo
+# Comprobación de normalidad con QQ plot
+g <- ggqqplot(df_filtrado,
+              x = "tiempo",
+              color = "pais")  # Usamos 'pais' en lugar de 'algoritmo'
 
+# Facetear por país
+g <- g + facet_wrap(~ pais)
 
+# Personalización del gráfico eliminando ticks y etiquetas
+g <- g + rremove("x.ticks") + rremove("x.text")
+g <- g + rremove("y.ticks") + rremove("y.text")
+g <- g + rremove("axis.title")
+print(g)
 ```
 
-
+-----------
 
 4. **Si las muestras provienen de más de una población, estas tienen la misma varianza.**
 
+- Procederemos a comprobar que la razón entre la máxima y mínima varianza muestral de los grupos no sea superior a 1,5.
+
+
+```{r}
+
+# Calcular la varianza muestral para cada país
+varianza_por_pais <- df_filtrado %>%
+  group_by(pais) %>%
+  summarise(varianza_muestral = var(tiempo, na.rm = TRUE))
+
+# Mostrar el resultado
+print(varianza_por_pais)
+
+# Calcular la razón entre la máxima y mínima varianza muestral
+max_var <- max(varianza_por_pais$varianza_muestral)
+min_var <- min(varianza_por_pais$varianza_muestral)
+razon_varianza <- max_var / min_var
+print(razon_varianza)
+```
+
+Notamos que la razón es \(1.338323 < 1.5\) por lo tanto, se cumple la condición de igualdad de varianzas (homocedasticidad). 
 
 ---------   
 
