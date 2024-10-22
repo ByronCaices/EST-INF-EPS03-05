@@ -222,5 +222,5 @@ prueba_tukey <- TukeyHSD(modelo_anova,
                          conf.level = 0.95)
 
 # Mostrar el resultado
-print(prueba_tukey)
+print(prueba_tukey$`pais`)
 ```

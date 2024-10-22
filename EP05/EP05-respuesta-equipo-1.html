@@ -595,9 +595,10 @@ pruebas post-hoc para este caso: Prueba HSD de Tukey.</p></li>
 <div id="prueba-post-hoc-hsd-de-tukey" class="section level4">
 <h4><strong>Prueba post-hoc: HSD de Tukey</strong></h4>
 <ul>
-<li>Realizaremos la prueba post-hoc de Tukey para determinar cuáles
+<li><p>PONER HIPOTESIS POST HOC</p></li>
+<li><p>Realizaremos la prueba post-hoc de Tukey para determinar cuáles
 países presentan diferencias significativas en el tiempo de resolución
-de cubos 2x2x2.</li>
+de cubos 2x2x2.</p></li>
 </ul>
 <pre class="r"><code># Realizar prueba post-hoc de Tukey
 prueba_tukey &lt;- TukeyHSD(modelo_anova,
@@ -606,18 +607,11 @@ prueba_tukey &lt;- TukeyHSD(modelo_anova,
                          conf.level = 0.95)
 
 # Mostrar el resultado
-print(prueba_tukey)</code></pre>
-<pre><code>##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-##     factor levels have been ordered
-## 
-## Fit: aov(formula = tiempo ~ pais, data = df_filtrado)
-## 
-## $pais
-##                      diff        lwr       upr p adj
-## Chile-Perú      0.2017073 0.15781186 0.2456028     0
-## Argentina-Perú  0.3456290 0.30087558 0.3903824     0
-## Argentina-Chile 0.1439217 0.09916826 0.1886751     0</code></pre>
+print(prueba_tukey$`pais`)</code></pre>
+<pre><code>##                      diff        lwr       upr        p adj
+## Chile-Perú      0.2017073 0.15781186 0.2456028 3.075318e-14
+## Argentina-Perú  0.3456290 0.30087558 0.3903824 1.310063e-14
+## Argentina-Chile 0.1439217 0.09916826 0.1886751 2.028300e-11</code></pre>
 </div>
 </div>
 </div>
