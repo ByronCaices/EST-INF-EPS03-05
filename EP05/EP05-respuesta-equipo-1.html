@@ -548,6 +548,77 @@ print(razon_varianza)</code></pre>
 varianzas (homocedasticidad).</p>
 <hr />
 </div>
+<div id="análisis-de-varianza-anova" class="section level4">
+<h4><strong>Análisis de varianza (ANOVA)</strong></h4>
+<ul>
+<li>Procederemos a realizar un análisis de varianza (ANOVA) para
+determinar si existen diferencias significativas en el tiempo de
+resolución de cubos 2x2x2 entre participantes de Chile, Perú y
+Argentina.</li>
+</ul>
+<pre class="r"><code># Realizar ANOVA
+modelo_anova &lt;- aov(tiempo ~ pais, data = df_filtrado)
+resumen_anova &lt;- summary(modelo_anova)
+print(resumen_anova)</code></pre>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## pais          2 2.3899   1.195   170.5 &lt;2e-16 ***
+## Residuals   117 0.8201   0.007                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code># Obtener el valor p
+valor_p &lt;- anova(modelo_anova)[[&quot;Pr(&gt;F)&quot;]][1]
+print(valor_p)</code></pre>
+<pre><code>## [1] 2.139484e-35</code></pre>
+<pre class="r"><code># Interpretación del valor p
+if (valor_p &lt; 0.05) {
+  cat(&quot;El valor p es&quot;, valor_p, &quot;&lt; 0.05, por lo que rechazamos la hipótesis nula&quot;)
+} else {
+  cat(&quot;El valor p es&quot;, valor_p, &quot;&gt;= 0.05, por lo que no rechazamos la hipótesis nula&quot;)
+}</code></pre>
+<pre><code>## El valor p es 2.139484e-35 &lt; 0.05, por lo que rechazamos la hipótesis nula</code></pre>
+<hr />
+</div>
+<div id="conclusión-de-anova" class="section level4">
+<h4><strong>Conclusión de anova</strong></h4>
+<ul>
+<li><p>Dado que el valor p = 2.139484e-35 &lt; 0.05 rechazamos la
+hipótesis nula en favor de la hipótesis alternativa. Por lo tanto,
+concluimos con 95% de confianza que existen diferencias significativas
+en el tiempo de resolución de cubos 2x2x2 para al menos uno los países
+Chile, Perú y Argentina.</p></li>
+<li><p>Para determinar cuáles países presentan diferencias
+significativas en el tiempo de resolución de cubos 2x2x2, realizaremos
+pruebas post-hoc para este caso: Prueba HSD de Tukey.</p></li>
+</ul>
+<hr />
+</div>
+<div id="prueba-post-hoc-hsd-de-tukey" class="section level4">
+<h4><strong>Prueba post-hoc: HSD de Tukey</strong></h4>
+<ul>
+<li>Realizaremos la prueba post-hoc de Tukey para determinar cuáles
+países presentan diferencias significativas en el tiempo de resolución
+de cubos 2x2x2.</li>
+</ul>
+<pre class="r"><code># Realizar prueba post-hoc de Tukey
+prueba_tukey &lt;- TukeyHSD(modelo_anova,
+                         &quot;pais&quot;,
+                         ordered = TRUE,
+                         conf.level = 0.95)
+
+# Mostrar el resultado
+print(prueba_tukey)</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+##     factor levels have been ordered
+## 
+## Fit: aov(formula = tiempo ~ pais, data = df_filtrado)
+## 
+## $pais
+##                      diff        lwr       upr p adj
+## Chile-Perú      0.2017073 0.15781186 0.2456028     0
+## Argentina-Perú  0.3456290 0.30087558 0.3903824     0
+## Argentina-Chile 0.1439217 0.09916826 0.1886751     0</code></pre>
+</div>
 </div>
 </div>
 

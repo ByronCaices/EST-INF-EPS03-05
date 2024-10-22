@@ -176,6 +176,51 @@ Notamos que la razón es \(1.338323 < 1.5\) por lo tanto, se cumple la condició
 
 ---------   
 
+#### **Análisis de varianza (ANOVA)**
 
+- Procederemos a realizar un análisis de varianza (ANOVA) para determinar si existen diferencias significativas en el tiempo de resolución de cubos 2x2x2 entre participantes de Chile, Perú y Argentina.
 
+```{r}
+# Realizar ANOVA
+modelo_anova <- aov(tiempo ~ pais, data = df_filtrado)
+resumen_anova <- summary(modelo_anova)
+print(resumen_anova)
 
+# Obtener el valor p
+valor_p <- anova(modelo_anova)[["Pr(>F)"]][1]
+print(valor_p)
+
+# Interpretación del valor p
+if (valor_p < 0.05) {
+  cat("El valor p es", valor_p, "< 0.05, por lo que rechazamos la hipótesis nula")
+} else {
+  cat("El valor p es", valor_p, ">= 0.05, por lo que no rechazamos la hipótesis nula")
+}
+```
+
+----------
+
+#### **Conclusión de anova**
+
+- Dado que el valor p = 2.139484e-35 < 0.05 rechazamos la hipótesis nula en favor de la hipótesis alternativa. Por lo tanto, concluimos con 95% de confianza que existen diferencias significativas en el tiempo de resolución de cubos 2x2x2 para al menos uno los países Chile, Perú y Argentina.
+
+- Para determinar cuáles países presentan diferencias significativas en el tiempo de resolución de cubos 2x2x2, realizaremos pruebas post-hoc para este caso: Prueba HSD de Tukey.
+
+----------
+
+#### **Prueba post-hoc: HSD de Tukey**
+
+- PONER HIPOTESIS POST HOC
+
+- Realizaremos la prueba post-hoc de Tukey para determinar cuáles países presentan diferencias significativas en el tiempo de resolución de cubos 2x2x2.
+
+```{r}
+# Realizar prueba post-hoc de Tukey
+prueba_tukey <- TukeyHSD(modelo_anova,
+                         "pais",
+                         ordered = TRUE,
+                         conf.level = 0.95)
+
+# Mostrar el resultado
+print(prueba_tukey)
+```
