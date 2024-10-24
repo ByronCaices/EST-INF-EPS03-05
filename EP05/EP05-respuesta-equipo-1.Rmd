@@ -222,5 +222,5 @@ prueba_tukey <- TukeyHSD(modelo_anova,
 # Mostrar el resultado
 print(prueba_tukey$`pais`)
 ```
-A partir de las muestras comparadas, podemos ver que todos tienen diferencias significativas entre ellas debido a que el p-value entre la diferencia de paises es manor al nivel de significancia de 0.05, por lo que podemos decir que las medias entre los grupos si son diferentes entre sí. Notando la diferencia mas grande entre Argentina y Perú, lo que indicaría que es la que tienen la variabilidad más significativa.
+A partir de las muestras comparadas, podemos ver que todos tienen diferencias significativas entre ellas debido a que el p-value entre la diferencia de paises es menor al nivel de significancia de 0.05, por lo que podemos decir con un 95% de confianza que las medias entre los grupos si son diferentes entre sí. Notando la diferencia mas grande entre Argentina y Perú, lo que indicaría que es la que tienen la variabilidad más significativa.
 
